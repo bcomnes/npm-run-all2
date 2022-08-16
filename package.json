@@ -36,7 +36,7 @@
     "minimatch": "^5.0.0",
     "pidtree": "^0.6.0",
     "read-pkg": "^5.2.0",
-    "shell-quote": "^1.6.1"
+    "shell-quote": "^1.7.3"
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
