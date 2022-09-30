@@ -29,7 +29,7 @@ $ npm install npm-run-all2 --save-dev
 $ yarn add npm-run-all2 --dev
 ```
 
-- It requires `Node@>=4`.
+- It requires `Node@>=14`. It may work on older versions of Node, but no guarantees are given.
 
 ## 📖 Usage
 
