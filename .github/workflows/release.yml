@@ -11,6 +11,10 @@ env:
   NODE_VERSION: 'lts/*'
   FORCE_COLOR: 2
 
+concurrency: # prevent concurrent releases
+  group: npm-bump
+  cancel-in-progress: true
+
 jobs:
   version_and_release:
     runs-on: ubuntu-latest
