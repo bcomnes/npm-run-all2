@@ -33,7 +33,7 @@ jobs:
       - run: git status # getting odd dirty repo errors during version debug info
       - run: git diff
       - name: npm version && npm publish
-        uses: bcomnes/npm-bump@v2.1.0
+        uses: bcomnes/npm-bump@v2.2.1
         with:
           git_email: bcomnes@gmail.com
           git_username: ${{ github.actor }}
