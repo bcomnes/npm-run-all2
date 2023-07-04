@@ -17,7 +17,6 @@ const spawn = require('child_process').spawn
 const path = require('path')
 const os = require('os')
 const fs = require('fs-extra')
-const PQueue = require('p-queue')
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -136,6 +135,7 @@ async function runMochaWithWorkspace (filePath) {
 
 (async () => {
   const startInSec = process.uptime()
+  const { default: PQueue } = await import('p-queue')
   const queue = new PQueue({ concurrency: os.cpus().length + 1 })
   const results = await Promise.all(
     (await fs.readdir(ROOT_PATH))
