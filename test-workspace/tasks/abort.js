@@ -1,5 +1,5 @@
-"use strict"
+'use strict'
 
 setTimeout(() => {
-    process.abort()
+  process.abort()
 }, 500)
