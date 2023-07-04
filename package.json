@@ -21,7 +21,7 @@
     "_mocha": "mocha --timeout 120000",
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "eslint --ignore-path .gitignore --report-unused-disable-directives .",
+    "lint": "standard",
     "pretest": "node scripts/make-slink.js && npm run lint",
     "test": "c8 npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
@@ -30,25 +30,24 @@
     "postversion": "git push --follow-tags && gh-release -y"
   },
   "dependencies": {
-    "ansi-styles": "^5.0.0",
+    "ansi-styles": "^6.2.1",
     "cross-spawn": "^7.0.3",
     "memorystream": "^0.3.1",
     "minimatch": "^9.0.0",
     "pidtree": "^0.6.0",
-    "read-pkg": "^5.2.0",
+    "read-pkg": "^8.0.0",
     "shell-quote": "^1.7.3"
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
     "c8": "^8.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-mysticatea": "^13.0.2",
     "fs-extra": "^11.1.0",
     "gh-release": "^7.0.0",
     "jsdoc": "^4.0.0",
     "mocha": "^10.0.0",
-    "p-queue": "^6.6.1",
-    "yarn": "^1.12.3"
+    "p-queue": "^7.3.4",
+    "yarn": "^1.12.3",
+    "standard": "^17.1.0"
   },
   "repository": {
     "type": "git",

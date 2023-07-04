@@ -3,11 +3,11 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
+'use strict'
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Public Interface
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * Print a help text.
@@ -16,8 +16,8 @@
  * @returns {Promise} Always a fulfilled promise.
  * @private
  */
-module.exports = function printHelp(output) {
-    output.write(`
+module.exports = function printHelp (output) {
+  output.write(`
 Usage:
     $ run-s [--help | -h | --version | -v]
     $ run-s [OPTIONS] <tasks>
@@ -56,5 +56,5 @@ See Also:
     https://github.com/mysticatea/npm-run-all#readme
 `)
 
-    return Promise.resolve(null)
+  return Promise.resolve(null)
 }
