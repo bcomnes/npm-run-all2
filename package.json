@@ -21,7 +21,7 @@
     "_mocha": "mocha --timeout 120000",
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "eslint --ignore-path .gitignore --report-unused-disable-directives .",
+    "lint": "standard",
     "pretest": "node scripts/make-slink.js && npm run lint",
     "test": "c8 npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
@@ -41,8 +41,7 @@
   "devDependencies": {
     "auto-changelog": "^2.2.0",
     "c8": "^8.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-mysticatea": "^13.0.2",
+    "standard": "^17.1.0",
     "fs-extra": "^11.1.0",
     "gh-release": "^7.0.0",
     "jsdoc": "^4.0.0",
