@@ -3,18 +3,18 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
+'use strict'
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Requirements
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-const runAll = require("../../lib")
-const parseCLIArgs = require("../common/parse-cli-args")
+const runAll = require('../../lib')
+const parseCLIArgs = require('../common/parse-cli-args')
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Public Interface
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 /**
  * Parses arguments, then run specified npm-scripts.
@@ -25,47 +25,46 @@ const parseCLIArgs = require("../common/parse-cli-args")
  * @returns {Promise} A promise which comes to be fulfilled when all npm-scripts are completed.
  * @private
  */
-module.exports = function npmRunAll(args, stdout, stderr) {
-    try {
-        const stdin = process.stdin
-        const argv = parseCLIArgs(args, { parallel: false }, { singleMode: true })
-        const group = argv.lastGroup
+module.exports = function npmRunAll (args, stdout, stderr) {
+  try {
+    const stdin = process.stdin
+    const argv = parseCLIArgs(args, { parallel: false }, { singleMode: true })
+    const group = argv.lastGroup
 
-        if (group.patterns.length === 0) {
-            return Promise.resolve(null)
-        }
-
-        const promise = runAll(
-            group.patterns,
-            {
-                stdout,
-                stderr,
-                stdin,
-                parallel: group.parallel,
-                continueOnError: argv.continueOnError,
-                printLabel: argv.printLabel,
-                printName: argv.printName,
-                config: argv.config,
-                packageConfig: argv.packageConfig,
-                silent: argv.silent,
-                arguments: argv.rest,
-                npmPath: argv.npmPath,
-            }
-        )
-
-        if (!argv.silent) {
-            promise.catch(err => {
-                //eslint-disable-next-line no-console
-                console.error("ERROR:", err.message)
-            })
-        }
-
-        return promise
+    if (group.patterns.length === 0) {
+      return Promise.resolve(null)
     }
-    catch (err) {
-        //eslint-disable-next-line no-console
-        console.error("ERROR:", err.message)
 
-        return Promise.reject(err)
+    const promise = runAll(
+      group.patterns,
+      {
+        stdout,
+        stderr,
+        stdin,
+        parallel: group.parallel,
+        continueOnError: argv.continueOnError,
+        printLabel: argv.printLabel,
+        printName: argv.printName,
+        config: argv.config,
+        packageConfig: argv.packageConfig,
+        silent: argv.silent,
+        arguments: argv.rest,
+        npmPath: argv.npmPath
+      }
+    )
+
+    if (!argv.silent) {
+      promise.catch(err => {
+        // eslint-disable-next-line no-console
+        console.error('ERROR:', err.message)
+      })
     }
+
+    return promise
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('ERROR:', err.message)
+
+    return Promise.reject(err)
+  }
 }

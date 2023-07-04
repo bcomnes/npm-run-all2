@@ -1,62 +1,63 @@
+/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-"use strict"
+'use strict'
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Requirements
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-const assert = require("assert").strict
-const util = require("./lib/util")
+const assert = require('assert').strict
+const util = require('./lib/util')
 const result = util.result
 const removeResult = util.removeResult
 const runAll = util.runAll
 
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 // Test
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
-describe("[mixed] npm-run-all", () => {
-    before(() => process.chdir("test-workspace"))
-    after(() => process.chdir(".."))
+describe('[mixed] npm-run-all', () => {
+  before(() => process.chdir('test-workspace'))
+  after(() => process.chdir('..'))
 
-    beforeEach(removeResult)
+  beforeEach(removeResult)
 
-    it("should run a mix of sequential and parallel tasks (has the default group):", async () => {
-        await runAll([
-            "test-task:append a",
-            "-p", "test-task:append b", "test-task:append c",
-            "-s", "test-task:append d", "test-task:append e",
-        ])
-        assert(
-            result() === "aabcbcddee" ||
-            result() === "aabccbddee" ||
-            result() === "aacbbcddee" ||
-            result() === "aacbcbddee"
-        )
-    })
+  it('should run a mix of sequential and parallel tasks (has the default group):', async () => {
+    await runAll([
+      'test-task:append a',
+      '-p', 'test-task:append b', 'test-task:append c',
+      '-s', 'test-task:append d', 'test-task:append e'
+    ])
+    assert(
+      result() === 'aabcbcddee' ||
+            result() === 'aabccbddee' ||
+            result() === 'aacbbcddee' ||
+            result() === 'aacbcbddee'
+    )
+  })
 
-    it("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
-        await runAll([
-            "-p", "test-task:append b", "test-task:append c",
-            "-s", "test-task:append d", "test-task:append e",
-        ])
-        assert(
-            result() === "bcbcddee" ||
-            result() === "bccbddee" ||
-            result() === "cbbcddee" ||
-            result() === "cbcbddee"
-        )
-    })
+  it("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
+    await runAll([
+      '-p', 'test-task:append b', 'test-task:append c',
+      '-s', 'test-task:append d', 'test-task:append e'
+    ])
+    assert(
+      result() === 'bcbcddee' ||
+            result() === 'bccbddee' ||
+            result() === 'cbbcddee' ||
+            result() === 'cbcbddee'
+    )
+  })
 
-    it("should not throw errors for --race and --max-parallel options if --parallel exists:", () =>
-        runAll([
-            "test-task:append a",
-            "-p", "test-task:append b", "test-task:append c",
-            "-s", "test-task:append d", "test-task:append e",
-            "-r",
-        ]))
+  it('should not throw errors for --race and --max-parallel options if --parallel exists:', () =>
+    runAll([
+      'test-task:append a',
+      '-p', 'test-task:append b', 'test-task:append c',
+      '-s', 'test-task:append d', 'test-task:append e',
+      '-r'
+    ]))
 })
