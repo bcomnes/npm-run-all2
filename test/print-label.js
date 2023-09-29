@@ -13,10 +13,7 @@
 const assert = require('assert').strict
 const nodeApi = require('../lib')
 const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
+const { runAll, runPar, runSeq } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Test

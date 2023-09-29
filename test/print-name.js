@@ -15,11 +15,8 @@ const nodeApi = require('../lib')
 const createHeader = require('../lib/create-header')
 const readPackageJson = require('../lib/read-package-json')
 const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
+const { runAll, runPar, runSeq } = require('./lib/util')
 const ansiStylesPromise = import('ansi-styles')
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
 
 // ------------------------------------------------------------------------------
 // Test

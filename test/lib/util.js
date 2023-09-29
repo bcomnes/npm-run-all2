@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
@@ -9,6 +10,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
+const { describe, it } = require('mocha')
 const cp = require('child_process')
 const fs = require('fs')
 const path = require('path')
@@ -22,6 +24,37 @@ const FILE_NAME = 'test.txt'
 const NPM_RUN_ALL = path.resolve(__dirname, '../../bin/npm-run-all/index.js')
 const RUN_P = path.resolve(__dirname, '../../bin/run-p/index.js')
 const RUN_S = path.resolve(__dirname, '../../bin/run-s/index.js')
+
+/**
+ * Determines whether we are running in npm, pnpm, or yarn
+ */
+function getPackageManagerName () {
+  const npmPath = process.env.npm_execpath
+  if (npmPath) {
+    const basename = path.basename(npmPath)
+    if (['npm', 'npx'].some(cmd => basename.startsWith(cmd))) {
+      return 'npm'
+    } else if (['pnpm', 'pnpx'].some(cmd => basename.startsWith(cmd))) {
+      return 'pnpm'
+    } else if (basename.startsWith('yarn')) {
+      return 'yarn'
+    }
+  }
+  throw new Error('Unable to determine what package manager is in use')
+}
+
+// Augment mocha's describe and it with 'skip' and 'npmOnly'
+const isNpm = () => getPackageManagerName() === 'npm'
+describe.npmOnly = isNpm() ? it : it.skip
+describe.skip.if = (condition) => condition ? describe.skip : describe
+it.npmOnly = isNpm() ? describe : describe.skip
+it.skip.if = (condition) => condition ? it.skip : it
+module.exports.getPackageManagerName = getPackageManagerName
+module.exports.isNpm = isNpm
+module.exports.isPnpm = () => getPackageManagerName() === 'pnpm'
+module.exports.isYarn = () => getPackageManagerName() === 'yarn'
+module.exports.describe = describe
+module.exports.it = it
 
 /**
  * Spawns the given script with the given arguments.

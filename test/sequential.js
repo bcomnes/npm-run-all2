@@ -13,12 +13,7 @@
 const assert = require('assert').strict
 const nodeApi = require('../lib')
 const spawnWithKill = require('./lib/spawn-with-kill')
-const util = require('./lib/util')
-const delay = util.delay
-const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runSeq = util.runSeq
+const { delay, result, removeResult, runAll, runSeq } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Test

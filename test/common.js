@@ -13,12 +13,7 @@
 const assert = require('assert').strict
 const nodeApi = require('../lib')
 const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
-const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
+const { describe, isPnpm, result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Test
@@ -221,14 +216,14 @@ describe('[common]', () => {
     })
   })
 
-  describe('should be able to use `restart` built-in task:', () => {
+  describe.npmOnly('should be able to use `restart` built-in task:', () => {
     it('Node API', () => nodeApi('restart'))
     it('npm-run-all command', () => runAll(['restart']))
     it('run-s command', () => runSeq(['restart']))
     it('run-p command', () => runPar(['restart']))
   })
 
-  describe('should be able to use `env` built-in task:', () => {
+  describe.skip.if(isPnpm())('should be able to use `env` built-in task:', () => {
     it('Node API', () => nodeApi('env'))
     it('npm-run-all command', () => runAll(['env']))
     it('run-s command', () => runSeq(['env']))

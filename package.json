@@ -22,11 +22,11 @@
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
     "lint": "standard",
-    "pretest": "node scripts/make-slink.js && npm run lint",
-    "test": "c8 npm run _mocha",
-    "watch": "npm run _mocha -- --watch --growl",
+    "pretest": "node scripts/make-slink.js && yarpm run lint",
+    "test": "c8 yarpm run _mocha",
+    "watch": "yarpm run _mocha -- --watch --growl",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
-    "preversion": "npm test",
+    "preversion": "yarpm test",
     "postversion": "git push --follow-tags && gh-release -y"
   },
   "dependencies": {
@@ -46,8 +46,10 @@
     "jsdoc": "^4.0.0",
     "mocha": "^10.0.0",
     "p-queue": "^7.3.4",
+    "rimraf": "^3.0.2",
+    "standard": "^17.1.0",
     "yarn": "^1.12.3",
-    "standard": "^17.1.0"
+    "yarpm": "^1.2.0"
   },
   "repository": {
     "type": "git",

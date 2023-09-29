@@ -14,6 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         node: ['lts/*', 18]
+        package-manager: ['npm', 'pnpm', 'yarn']
 
     steps:
       - uses: actions/checkout@v4
@@ -21,8 +22,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - run: npm i
-      - run: npm test
+      - name: Install pnpm
+        if: ${{ matrix.package-manager == 'pnpm' }}
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install dependencies via yarn
+        if: ${{ matrix.package-manager == 'yarn' }}
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+          useYarn: true
+          install-command: yarn install
+      - name: Install dependencies
+        if: ${{ matrix.package-manager != 'yarn' }}
+        run: ${{ matrix.package-manager }} install
+      - run: ${{ matrix.package-manager }} run test
       - uses: codecov/codecov-action@v3
         if: ${{ github.event_name == 'pull_request' }}
         with:

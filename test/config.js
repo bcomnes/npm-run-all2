@@ -12,18 +12,13 @@
 
 const assert = require('assert').strict
 const nodeApi = require('../lib')
-const util = require('./lib/util')
-const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
+const { describe, isPnpm, result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Test
 // ------------------------------------------------------------------------------
 
-describe('[config] it should have an ability to set config variables:', () => {
+describe.skip.if(isPnpm())('[config] it should have an ability to set config variables:', () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
 
