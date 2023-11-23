@@ -9,11 +9,6 @@
     "npm-run-all2": "bin/npm-run-all/index.js"
   },
   "main": "lib/index.js",
-  "files": [
-    "bin",
-    "lib",
-    "docs"
-  ],
   "engines": {
     "node": "^14.18.0 || >=16.0.0",
     "npm": ">= 8"
