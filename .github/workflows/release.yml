@@ -7,6 +7,10 @@ on:
         description: 'npm version {major,minor,patch}'
         required: true
 
+permissions:
+  contents: read
+  id-token: write
+
 env:
   NODE_VERSION: 'lts/*'
   FORCE_COLOR: 2
@@ -40,3 +44,4 @@ jobs:
           newversion: ${{ github.event.inputs.newversion }}
           github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
           npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
+          publish_cmd: 'npm publish --provenance --access public'
