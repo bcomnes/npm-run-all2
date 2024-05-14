@@ -10,7 +10,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { strictEqual } = require('assert').strict
+const assert = require('assert').strict
+const { strictEqual } = assert
 
 const nodeApi = require('../lib')
 const util = require('./lib/util')
@@ -147,7 +148,10 @@ describe('[argument-placeholders]', () => {
 
     it('run-p command', () =>
       runPar(['test-task:dump {%}', '--', '1st', '2nd'])
-        .then(() => strictEqual(result(), '["1st"]["2nd"]')))
+        .then(() => {
+          const value = result()
+          assert(value === '["1st"]["2nd"]' || value === '["2nd"]["1st"]')
+        }))
   })
 
   describe("Every '{1}', '{2}', '{@}' and '{*}' should be replaced by the arguments preceded by '--':", () => {
