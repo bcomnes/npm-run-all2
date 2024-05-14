@@ -177,6 +177,12 @@ There are the following placeholders:
 - `{1}`, `{2}`, ... -- An argument. `{1}` is the 1st argument. `{2}` is the 2nd.
 - `{@}` -- All arguments.
 - `{*}` -- All arguments as combined.
+- `{%}` -- Repeats the command for every argument. (There's no equivalent shell parameter and does not support suffixes)
+
+Support for following suffixes:
+
+- `{1-=foo}` -- defaults to `'foo'` here when the 1st argument is missing
+- `{1:=foo}` -- defaults to `'foo'` here and in all following `{1}` when the 1st argument is missing
 
 Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters). But please note arguments are enclosed by double quotes automatically (similar to npm).
 
