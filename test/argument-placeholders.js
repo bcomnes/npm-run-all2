@@ -133,7 +133,7 @@ describe('[argument-placeholders]', () => {
         .then(() => strictEqual(result(), '["1st 2nd"]')))
   })
 
-  describe.only("'{%}' should be unfolded into one command for each argument following '--':", () => {
+  describe("'{%}' should be unfolded into one command for each argument following '--':", () => {
     it('Node API', () =>
       nodeApi('test-task:dump {%}', { arguments: ['1st', '2nd'] })
         .then(() => strictEqual(result(), '["1st"]["2nd"]')))
