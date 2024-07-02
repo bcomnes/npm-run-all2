@@ -5,8 +5,6 @@
  */
 'use strict'
 
-/* eslint-disable no-process-env */
-
 // ------------------------------------------------------------------------------
 // Helpers
 // ------------------------------------------------------------------------------
@@ -243,5 +241,3 @@ function parseCLIArgsCore (set, args) {
 module.exports = function parseCLIArgs (args, initialValues, options) {
   return parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
 }
-
-/* eslint-enable */

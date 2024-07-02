@@ -49,20 +49,18 @@ module.exports = function npmRunAll (args, stdout, stderr) {
         packageConfig: argv.packageConfig,
         silent: argv.silent,
         arguments: argv.rest,
-        npmPath: argv.npmPath
+        npmPath: argv.npmPath,
       }
     )
 
     if (!argv.silent) {
       promise.catch(err => {
-        // eslint-disable-next-line no-console
         console.error('ERROR:', err.message)
       })
     }
 
     return promise
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('ERROR:', err.message)
 
     return Promise.reject(err)

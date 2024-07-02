@@ -52,7 +52,7 @@ module.exports = function npmRunAll (args, stdout, stderr) {
             arguments: argv.rest,
             race: group.parallel && argv.race,
             npmPath: argv.npmPath,
-            aggregateOutput: group.parallel && argv.aggregateOutput
+            aggregateOutput: group.parallel && argv.aggregateOutput,
           }
         ))
       },
@@ -61,14 +61,12 @@ module.exports = function npmRunAll (args, stdout, stderr) {
 
     if (!argv.silent) {
       promise.catch(err => {
-        // eslint-disable-next-line no-console
         console.error('ERROR:', err.message)
       })
     }
 
     return promise
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('ERROR:', err.message)
 
     return Promise.reject(err)
