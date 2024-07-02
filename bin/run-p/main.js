@@ -52,20 +52,18 @@ module.exports = function npmRunAll (args, stdout, stderr) {
         arguments: argv.rest,
         race: argv.race,
         npmPath: argv.npmPath,
-        aggregateOutput: argv.aggregateOutput
+        aggregateOutput: argv.aggregateOutput,
       }
     )
 
     if (!argv.silent) {
       promise.catch(err => {
-        // eslint-disable-next-line no-console
         console.error('ERROR:', err.message)
       })
     }
 
     return promise
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('ERROR:', err.message)
 
     return Promise.reject(err)

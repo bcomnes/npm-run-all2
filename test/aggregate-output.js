@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
@@ -40,7 +39,7 @@ describe('[aggregated-output] npm-run-all', () => {
       createExpectedOutput('second'),
       createExpectedOutput('third'),
       createExpectedOutput('first'),
-      ''
+      '',
     ].join('\n')
 
     let stdout = null
@@ -107,7 +106,7 @@ describe('[aggregated-output] npm-run-all', () => {
           'test-task:delayed first 5000',
           'test-task:delayed second 1000',
           'test-task:delayed third 3000',
-          '--silent', '--aggregate-output'
+          '--silent', '--aggregate-output',
         ],
         stdout
       )
