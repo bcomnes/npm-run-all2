@@ -6,6 +6,17 @@ env:
   FORCE_COLOR: 2
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js lts/*
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: npm i
+      - run: npm run check
+
   test:
     runs-on: ${{ matrix.os }}
 
@@ -22,14 +33,14 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm i
-      - run: npm test
+      - run: npm run test-mocha
       - uses: codecov/codecov-action@v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           flags: ${{ matrix.os }}-${{ matrix.node }}
 
   automerge:
-    needs: test
+    needs: [lint, test]
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

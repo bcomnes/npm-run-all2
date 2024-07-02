@@ -14,13 +14,15 @@
     "npm": ">= 8"
   },
   "scripts": {
-    "_mocha": "mocha --timeout 120000",
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "eslint",
-    "pretest": "node scripts/make-slink.js && npm run lint",
-    "test": "c8 npm run _mocha",
-    "watch": "npm run _mocha -- --watch --growl",
+    "check:eslint": "eslint",
+    "check:knip": "knip",
+    "check": "node ./bin/run-p/index.js check:*",
+    "pretest": "node scripts/make-slink.js",
+    "test-mocha": "c8 mocha --timeout 120000",
+    "test": "node ./bin/run-s/index.js check test-mocha",
+    "watch": "mocha --timeout 120000 --watch --growl",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "preversion": "npm test",
     "postversion": "git push --follow-tags && gh-release -y"
@@ -38,12 +40,12 @@
     "auto-changelog": "^2.2.0",
     "c8": "^10.0.0",
     "eslint": "^9.6.0",
-    "fs-extra": "^11.1.0",
     "gh-release": "^7.0.0",
     "jsdoc": "^4.0.0",
+    "knip": "^5.23.3",
     "mocha": "^10.0.0",
     "neostandard": "^0.11.0",
-    "p-queue": "^8.0.1",
+    "rimraf": "^5.0.7",
     "yarn": "^1.12.3"
   },
   "repository": {

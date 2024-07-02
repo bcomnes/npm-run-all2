@@ -12,9 +12,7 @@
 const assert = require('assert').strict
 const spawn = require('cross-spawn')
 const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
-const result = util.result
-const removeResult = util.removeResult
+const { result, removeResult } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Helpers

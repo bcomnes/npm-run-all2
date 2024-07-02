@@ -10,10 +10,7 @@
 // ------------------------------------------------------------------------------
 
 const assert = require('assert').strict
-const util = require('./lib/util')
-const result = util.result
-const removeResult = util.removeResult
-const runAll = util.runAll
+const { result, removeResult, runAll } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
 // Test
