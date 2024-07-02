@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
@@ -42,7 +41,7 @@ describe('[print-label] npm-run-all', () => {
       '[test-task:echo abc] ',
       '[test-task:echo abc] ',
       '[test-task:echo abc] ',
-      '[test-task:echo abc] abc'
+      '[test-task:echo abc] abc',
     ].join('\n')
 
     it('Node API', async () => {
@@ -134,7 +133,7 @@ describe('[print-label] npm-run-all', () => {
       '[test-task:echo ab  ] ',
       '[test-task:echo ab  ] ',
       '[test-task:echo ab  ] ',
-      '[test-task:echo ab  ] ab'
+      '[test-task:echo ab  ] ab',
     ].join('\n')
 
     it('Node API', async () => {
@@ -172,12 +171,12 @@ describe('[print-label] npm-run-all', () => {
       '\n[test-task:echo ab  ] ',
       '\n[test-task:echo ab  ] ab',
       '\n[test-task:echo abcd] ',
-      '\n[test-task:echo abcd] abcd'
+      '\n[test-task:echo abcd] abcd',
     ]
     const UNEXPECTED_PATTERNS = [
       /aab(cd)?/,
       /ab(cd)?a\b/,
-      /\n\n/
+      /\n\n/,
     ]
 
     it('Node API', async () => {

@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
@@ -30,7 +29,7 @@ describe('[mixed] npm-run-all', () => {
     await runAll([
       'test-task:append a',
       '-p', 'test-task:append b', 'test-task:append c',
-      '-s', 'test-task:append d', 'test-task:append e'
+      '-s', 'test-task:append d', 'test-task:append e',
     ])
     assert(
       result() === 'aabcbcddee' ||
@@ -43,7 +42,7 @@ describe('[mixed] npm-run-all', () => {
   it("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
     await runAll([
       '-p', 'test-task:append b', 'test-task:append c',
-      '-s', 'test-task:append d', 'test-task:append e'
+      '-s', 'test-task:append d', 'test-task:append e',
     ])
     assert(
       result() === 'bcbcddee' ||
@@ -58,6 +57,6 @@ describe('[mixed] npm-run-all', () => {
       'test-task:append a',
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
-      '-r'
+      '-r',
     ]))
 })

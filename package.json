@@ -17,7 +17,7 @@
     "_mocha": "mocha --timeout 120000",
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
-    "lint": "standard",
+    "lint": "eslint",
     "pretest": "node scripts/make-slink.js && npm run lint",
     "test": "c8 npm run _mocha",
     "watch": "npm run _mocha -- --watch --growl",
@@ -37,12 +37,13 @@
   "devDependencies": {
     "auto-changelog": "^2.2.0",
     "c8": "^10.0.0",
+    "eslint": "^9.6.0",
     "fs-extra": "^11.1.0",
     "gh-release": "^7.0.0",
     "jsdoc": "^4.0.0",
     "mocha": "^10.0.0",
+    "neostandard": "^0.11.0",
     "p-queue": "^8.0.1",
-    "standard": "^17.1.0",
     "yarn": "^1.12.3"
   },
   "repository": {

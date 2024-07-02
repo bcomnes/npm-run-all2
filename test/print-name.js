@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.

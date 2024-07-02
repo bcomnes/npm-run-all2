@@ -8,7 +8,6 @@
 // ------------------------------------------------------------------------------
 // Public Interface
 // ------------------------------------------------------------------------------
-/* eslint-disable no-process-exit */
 
 module.exports = function bootstrap (name) {
   const argv = process.argv.slice(2)
@@ -47,5 +46,3 @@ module.exports = function bootstrap (name) {
       )
   }
 }
-
-/* eslint-enable */

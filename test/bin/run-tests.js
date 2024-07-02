@@ -94,7 +94,7 @@ function runMocha (filePath, workspacePath) {
         failing,
         id: path.basename(filePath, '.js'),
         passing,
-        text
+        text,
       })
     })
     cp.on('error', reject)
@@ -165,5 +165,5 @@ async function runMochaWithWorkspace (filePath) {
   process.stdout.write(`\n\nTOTAL: passing ${passing} failing ${failing} (${durationToText(process.uptime() - startInSec)})\n\n`)
 })().catch(error => {
   process.stderr.write(`\n\n${error.stack}\n\n`)
-  process.exit(1) // eslint-disable-line no-process-exit
+  process.exit(1)
 })
