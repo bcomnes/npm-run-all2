@@ -10,12 +10,13 @@
   },
   "main": "lib/index.js",
   "engines": {
-    "node": "^14.18.0 || >=16.0.0",
+    "node": "^14.18.0 || ^16.13.0 || >=18.0.0",
     "npm": ">= 8"
   },
   "scripts": {
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
+    "check:installed-check": "installed-check --ignore-dev",
     "check:eslint": "eslint",
     "check:knip": "knip",
     "precheck": "node scripts/make-slink.js",
@@ -42,6 +43,7 @@
     "c8": "^10.0.0",
     "eslint": "^9.6.0",
     "gh-release": "^7.0.0",
+    "installed-check": "^9.3.0",
     "jsdoc": "^4.0.0",
     "knip": "^5.23.3",
     "mocha": "^10.0.0",
