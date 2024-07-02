@@ -1,6 +1,14 @@
 name: tests
 
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - master
 
 env:
   FORCE_COLOR: 2
