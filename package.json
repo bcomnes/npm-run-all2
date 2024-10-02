@@ -36,7 +36,8 @@
     "minimatch": "^9.0.0",
     "pidtree": "^0.6.0",
     "read-package-json-fast": "^3.0.2",
-    "shell-quote": "^1.7.3"
+    "shell-quote": "^1.7.3",
+    "which": "^3.0.1"
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
