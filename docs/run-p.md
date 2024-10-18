@@ -56,7 +56,7 @@ For example:
 ```json
 {
     "scripts": {
-        "clean": "rimraf dist",
+        "clean": "rm -rf dist",
         "lint":  "eslint src",
         "build": "babel src -o lib"
     }
