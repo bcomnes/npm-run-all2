@@ -35,7 +35,7 @@
     "memorystream": "^0.3.1",
     "minimatch": "^9.0.0",
     "pidtree": "^0.6.0",
-    "read-package-json-fast": "^3.0.2",
+    "read-package-json-fast": "^4.0.0",
     "shell-quote": "^1.7.3",
     "which": "^3.0.1"
   },
