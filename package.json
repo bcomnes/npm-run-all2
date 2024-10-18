@@ -49,7 +49,6 @@
     "knip": "^5.23.3",
     "mocha": "^10.0.0",
     "neostandard": "^0.11.0",
-    "rimraf": "^5.0.7",
     "yarn": "^1.12.3"
   },
   "repository": {
