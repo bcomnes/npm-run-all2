@@ -10,8 +10,8 @@
   },
   "main": "lib/index.js",
   "engines": {
-    "node": "^14.18.0 || ^16.13.0 || >=18.0.0",
-    "npm": ">= 8"
+    "node": "^18.17.0 || >=20.5.0",
+    "npm": ">= 9"
   },
   "scripts": {
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
