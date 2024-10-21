@@ -1,6 +1,6 @@
 {
   "name": "npm-run-all2",
-  "version": "6.2.4",
+  "version": "6.2.6",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential. (Maintainence fork)",
   "bin": {
     "run-p": "bin/run-p/index.js",
