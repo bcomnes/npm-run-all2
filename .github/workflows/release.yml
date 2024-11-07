@@ -18,6 +18,8 @@ concurrency: # prevent concurrent releases
 jobs:
   version_and_release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # for npm provenance
     steps:
       - uses: actions/checkout@v4
         with:

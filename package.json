@@ -83,5 +83,8 @@
       "lcovonly",
       "text"
     ]
+  },
+  "publishConfig": {
+    "provenance": true
   }
 }
