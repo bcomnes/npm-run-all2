@@ -32,10 +32,12 @@
   "dependencies": {
     "ansi-styles": "^6.2.1",
     "cross-spawn": "^7.0.3",
+    "json-parse-even-better-errors": "^4.0.0",
+    "json5": "^2.2.3",
     "memorystream": "^0.3.1",
     "minimatch": "^9.0.0",
+    "npm-normalize-package-bin": "^4.0.0",
     "pidtree": "^0.6.0",
-    "read-package-json-fast": "^4.0.0",
     "shell-quote": "^1.7.3",
     "which": "^5.0.0"
   },
