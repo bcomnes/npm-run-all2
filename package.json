@@ -47,7 +47,7 @@
     "installed-check": "^9.3.0",
     "jsdoc": "^4.0.0",
     "knip": "^5.23.3",
-    "mocha": "^10.0.0",
+    "mocha": "^11.0.1",
     "neostandard": "^0.11.0",
     "yarn": "^1.12.3"
   },
