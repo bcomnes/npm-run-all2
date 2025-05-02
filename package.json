@@ -1,7 +1,7 @@
 {
   "name": "npm-run-all2",
   "version": "7.0.2",
-  "description": "A CLI tool to run multiple npm-scripts in parallel or sequential. (Maintainence fork)",
+  "description": "A CLI tool to run multiple npm-scripts in parallel or sequential. (Maintenance fork)",
   "bin": {
     "run-p": "bin/run-p/index.js",
     "run-s": "bin/run-s/index.js",
@@ -10,8 +10,8 @@
   },
   "main": "lib/index.js",
   "engines": {
-    "node": "^18.17.0 || >=20.5.0",
-    "npm": ">= 9"
+    "node": ">=20.5.0",
+    "npm": ">= 10"
   },
   "scripts": {
     "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
