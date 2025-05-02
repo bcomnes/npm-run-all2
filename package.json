@@ -10,7 +10,7 @@
   },
   "main": "lib/index.js",
   "engines": {
-    "node": ">=20.5.0",
+    "node": "^20.5.0 || >=22.0.0",
     "npm": ">= 10"
   },
   "scripts": {
