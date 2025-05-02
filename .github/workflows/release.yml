@@ -8,8 +8,7 @@ on:
         required: true
 
 env:
-  NODE_VERSION: 'lts/*'
-  FORCE_COLOR: 2
+  FORCE_COLOR: 1
 
 concurrency: # prevent concurrent releases
   group: npm-bump
@@ -23,10 +22,10 @@ jobs:
         with:
           # fetch full history so things like auto-changelog work properly
           fetch-depth: 0
-      - name: Use Node.js ${{ env.NODE_VERSION }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: package.json
           # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
           registry-url: 'https://registry.npmjs.org'
       - run: npm i
