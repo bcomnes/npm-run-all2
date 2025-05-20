@@ -27,8 +27,7 @@
     "test": "node ./bin/run-s/index.js check test-mocha",
     "watch": "mocha --timeout 120000 --watch --growl",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
-    "preversion": "npm test",
-    "postversion": "git push --follow-tags && gh-release -y"
+    "prepublishOnly": "git push --follow-tags && gh-release -y"
   },
   "dependencies": {
     "ansi-styles": "^6.2.1",
