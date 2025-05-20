@@ -50,6 +50,24 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     })
   })
 
+  describe('"test-task:append:**" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
+    it('Node API', async () => {
+      await nodeApi('test-task:append:**')
+      assert(result() === 'aaacacadadbb')
+    })
+
+    it('npm-run-all command', async () => {
+      await runAll(['test-task:append:**'])
+      assert(result() === 'aaacacadadbb')
+    })
+
+    it('run-s command', async () => {
+      await runSeq(['test-task:append:**'])
+      assert(result() === 'aaacacadadbb')
+    })
+  })
+
+  // should act same way as section above
   describe('"test-task:append:**:*" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
     it('Node API', async () => {
       await nodeApi('test-task:append:**:*')
