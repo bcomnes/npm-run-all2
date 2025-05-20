@@ -34,7 +34,7 @@
     "ansi-styles": "^6.2.1",
     "cross-spawn": "^7.0.6",
     "memorystream": "^0.3.1",
-    "minimatch": "^10.0.1",
+    "picomatch": "^4.0.2",
     "pidtree": "^0.6.0",
     "read-package-json-fast": "^4.0.0",
     "shell-quote": "^1.7.3",
