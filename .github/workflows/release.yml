@@ -29,6 +29,7 @@ jobs:
           # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
           registry-url: 'https://registry.npmjs.org'
       - run: npm i
+      - run: npm test
       - run: git status # getting odd dirty repo errors during version debug info
       - run: git diff
       - name: npm version && npm publish
