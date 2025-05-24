@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after } = require('node:test')
+const assert = require('node:assert/strict')
 const nodeApi = require('../lib')
 const createHeader = require('../lib/create-header')
 const readPackageJson = require('../lib/read-package-json')
@@ -36,7 +37,7 @@ describe('[print-name] npm-run-all', () => {
   after(() => process.chdir('..'))
 
   describe('should print names before running tasks:', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await nodeApi('test-task:echo abc', { stdout, silent: true, printName: true })
@@ -44,7 +45,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('npm-run-all command (--print-name)', async () => {
+    test('npm-run-all command (--print-name)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '--print-name'], stdout)
@@ -52,7 +53,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('run-s command (--print-name)', async () => {
+    test('run-s command (--print-name)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '--print-name'], stdout)
@@ -60,7 +61,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('run-p command (--print-name)', async () => {
+    test('run-p command (--print-name)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '--print-name'], stdout)
@@ -68,7 +69,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('npm-run-all command (-n)', async () => {
+    test('npm-run-all command (-n)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '-n'], stdout)
@@ -76,7 +77,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('run-s command (-n)', async () => {
+    test('run-s command (-n)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '-n'], stdout)
@@ -84,7 +85,7 @@ describe('[print-name] npm-run-all', () => {
       assert.equal(stdout.value.slice(0, header.length), header)
     })
 
-    it('run-p command (-n)', async () => {
+    test('run-p command (-n)', async () => {
       const ansiStyles = (await ansiStylesPromise).default
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '-n'], stdout)

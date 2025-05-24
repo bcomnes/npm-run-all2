@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after } = require('node:test')
+const assert = require('node:assert/strict')
 const nodeApi = require('../lib')
 const BufferStream = require('./lib/buffer-stream')
 const util = require('./lib/util')
@@ -44,43 +45,43 @@ describe('[print-label] npm-run-all', () => {
       '[test-task:echo abc] abc',
     ].join('\n')
 
-    it('Node API', async () => {
+    test('Node API', async () => {
       const stdout = new BufferStream()
       await nodeApi('test-task:echo abc', { stdout, silent: true, printLabel: true })
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('npm-run-all command (--print-label)', async () => {
+    test('npm-run-all command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '--print-label'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('run-s command (--print-label)', async () => {
+    test('run-s command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '--print-label'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('run-p command (--print-label)', async () => {
+    test('run-p command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '--print-label'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('npm-run-all command (-l)', async () => {
+    test('npm-run-all command (-l)', async () => {
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '-l'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('run-s command (-l)', async () => {
+    test('run-s command (-l)', async () => {
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '-l'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('run-p command (-l)', async () => {
+    test('run-p command (-l)', async () => {
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '-l'], stdout)
       assert.equal(stdout.value, EXPECTED_TEXT)
@@ -136,7 +137,7 @@ describe('[print-label] npm-run-all', () => {
       '[test-task:echo ab  ] ab',
     ].join('\n')
 
-    it('Node API', async () => {
+    test('Node API', async () => {
       const stdout = new BufferStream()
       await nodeApi(
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab'],
@@ -145,7 +146,7 @@ describe('[print-label] npm-run-all', () => {
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       const stdout = new BufferStream()
       await runAll(
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--silent', '--print-label'],
@@ -154,7 +155,7 @@ describe('[print-label] npm-run-all', () => {
       assert.equal(stdout.value, EXPECTED_TEXT)
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       const stdout = new BufferStream()
       await runSeq(
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--silent', '--print-label'],
@@ -179,7 +180,7 @@ describe('[print-label] npm-run-all', () => {
       /\n\n/,
     ]
 
-    it('Node API', async () => {
+    test('Node API', async () => {
       const stdout = new BufferStream()
       await nodeApi(
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab'],
@@ -193,7 +194,7 @@ describe('[print-label] npm-run-all', () => {
       }
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       const stdout = new BufferStream()
       await runAll(
         ['--parallel', 'test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--print-label'],
@@ -207,7 +208,7 @@ describe('[print-label] npm-run-all', () => {
       }
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       const stdout = new BufferStream()
       await runPar(
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--print-label'],

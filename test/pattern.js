@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after, beforeEach } = require('node:test')
+const assert = require('node:assert/strict')
 const nodeApi = require('../lib')
 const BufferStream = require('./lib/buffer-stream')
 const { result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
@@ -21,25 +22,25 @@ const { result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
 describe('[pattern] it should run matched tasks if glob like patterns are given.', () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
-  beforeEach(removeResult)
+  beforeEach(() => removeResult())
 
   describe('"test-task:append:*" to "test-task:append:a" and "test-task:append:b"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       await nodeApi('test-task:append:*')
       assert(result() === 'aabb')
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       await runAll(['test-task:append:*'])
       assert(result() === 'aabb')
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       await runSeq(['test-task:append:*'])
       assert(result() === 'aabb')
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       await runPar(['test-task:append:*'])
       assert(
         result() === 'abab' ||
@@ -51,17 +52,17 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   })
 
   describe('"test-task:append:**" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       await nodeApi('test-task:append:**')
       assert(result() === 'aaacacadadbb')
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       await runAll(['test-task:append:**'])
       assert(result() === 'aaacacadadbb')
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       await runSeq(['test-task:append:**'])
       assert(result() === 'aaacacadadbb')
     })
@@ -69,39 +70,39 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
 
   // should act same way as section above
   describe('"test-task:append:**:*" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       await nodeApi('test-task:append:**:*')
       assert(result() === 'aaacacadadbb')
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       await runAll(['test-task:append:**:*'])
       assert(result() === 'aaacacadadbb')
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       await runSeq(['test-task:append:**:*'])
       assert(result() === 'aaacacadadbb')
     })
   })
 
   describe('(should ignore duplications) "test-task:append:b" "test-task:append:*" to "test-task:append:b", "test-task:append:a"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       await nodeApi(['test-task:append:b', 'test-task:append:*'])
       assert(result() === 'bbaa')
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       await runAll(['test-task:append:b', 'test-task:append:*'])
       assert(result() === 'bbaa')
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       await runSeq(['test-task:append:b', 'test-task:append:*'])
       assert(result() === 'bbaa')
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       await runPar(['test-task:append:b', 'test-task:append:*'])
       assert(
         result() === 'baba' ||
@@ -113,7 +114,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   })
 
   describe('"a" should not match to "test-task:append:a"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       try {
         await nodeApi('a')
         assert(false, 'should not match')
@@ -122,7 +123,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       const stderr = new BufferStream()
       try {
         await runAll(['a'], null, stderr)
@@ -132,7 +133,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       const stderr = new BufferStream()
       try {
         await runSeq(['a'], null, stderr)
@@ -142,7 +143,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       const stderr = new BufferStream()
       try {
         await runPar(['a'], null, stderr)
@@ -154,7 +155,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   })
 
   describe('"!test-task:**" should not match to anything', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       try {
         await nodeApi('!test-task:**')
         assert(false, 'should not match')
@@ -163,7 +164,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       const stderr = new BufferStream()
       try {
         await runAll(['!test-task:**'], null, stderr)
@@ -173,7 +174,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       const stderr = new BufferStream()
       try {
         await runSeq(['!test-task:**'], null, stderr)
@@ -183,7 +184,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       }
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       const stderr = new BufferStream()
       try {
         await runPar(['!test-task:**'], null, stderr)
@@ -195,22 +196,22 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   })
 
   describe('"!test" "?test" to "!test", "?test"', () => {
-    it('Node API', async () => {
+    test('Node API', async () => {
       await nodeApi(['!test', '?test'])
       assert(result().trim() === 'XQ')
     })
 
-    it('npm-run-all command', async () => {
+    test('npm-run-all command', async () => {
       await runAll(['!test', '?test'])
       assert(result().trim() === 'XQ')
     })
 
-    it('run-s command', async () => {
+    test('run-s command', async () => {
       await runSeq(['!test', '?test'])
       assert(result().trim() === 'XQ')
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       await runPar(['!test', '?test'])
       assert(result().trim() === 'XQ' || result().trim() === 'QX')
     })

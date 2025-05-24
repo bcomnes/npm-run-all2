@@ -2,7 +2,7 @@
 
 module.exports = [
   ...require('neostandard')({
-    env: ['mocha'],
+    env: ['node', 'mocha'],
     ignores: require('neostandard').resolveIgnoresFromGitignore(),
     ts: true,
   }),
