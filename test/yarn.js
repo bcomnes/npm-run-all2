@@ -3,17 +3,16 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const spawn = require('cross-spawn')
-const BufferStream = require('./lib/buffer-stream')
-const { result, removeResult } = require('./lib/util')
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import BufferStream from './lib/buffer-stream.cjs'
+import { result, removeResult } from './lib/util.cjs'
+import spawn from 'cross-spawn'
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -42,13 +41,11 @@ function exec (command, args) {
   })
 }
 
-const nodeVersion = Number(process.versions.node.split('.')[0])
-
 // ------------------------------------------------------------------------------
 // Test
 // ------------------------------------------------------------------------------
 
-;(nodeVersion >= 6 ? describe : xdescribe)('[yarn]', () => {
+describe('[yarn]', () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
 

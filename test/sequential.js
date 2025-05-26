@@ -3,23 +3,22 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const spawnWithKill = require('./lib/spawn-with-kill')
-const { delay, result, removeResult, runAll, runSeq } = require('./lib/util')
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from '../lib/index.js'
+import spawnWithKill from './lib/spawn-with-kill.cjs'
+import { delay, result, removeResult, runAll, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test
 // ------------------------------------------------------------------------------
 
-describe('[sequencial] npm-run-all', () => {
+describe('[sequential] npm-run-all', () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
 

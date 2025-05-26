@@ -3,15 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const { result, removeResult, runAll } = require('./lib/util')
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import { result, removeResult, runAll } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test

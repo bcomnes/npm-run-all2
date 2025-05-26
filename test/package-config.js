@@ -3,17 +3,16 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { execSync } = require('child_process')
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const { result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
+import { execSync } from 'child_process'
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from '../lib/index.js'
+import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test
@@ -91,7 +90,7 @@ describe("[package-config] it should have an ability to overwrite package's conf
       })
     })
 
-    describe('CLI commands should transfar overriting nested commands.', () => {
+    describe('CLI commands should transfer overwriting nested commands.', () => {
       test('npm-run-all command', async () => {
         await runAll(['test-task:nested-package-config', '--npm-run-all-test:test', 'OVERWRITTEN'])
         assert.equal(result(), 'OVERWRITTEN')

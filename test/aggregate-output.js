@@ -3,20 +3,16 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from '../lib/index.js'
+import BufferStream from './lib/buffer-stream.cjs'
+import { runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test

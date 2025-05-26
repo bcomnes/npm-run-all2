@@ -3,23 +3,22 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const BufferStream = require('./lib/buffer-stream')
-const { result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from '../lib/index.js'
+import BufferStream from './lib/buffer-stream.cjs'
+import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test
 // ------------------------------------------------------------------------------
 
-describe('[pattern] it should run matched tasks if glob like patterns are given.', () => {
+describe('[pattern] it should run matched tasks if glob like patterns are given.', async () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
   beforeEach(() => removeResult())
@@ -27,44 +26,41 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   describe('"test-task:append:*" to "test-task:append:a" and "test-task:append:b"', () => {
     test('Node API', async () => {
       await nodeApi('test-task:append:*')
-      assert(result() === 'aabb')
+      assert.strictEqual(result(), 'aabb')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['test-task:append:*'])
-      assert(result() === 'aabb')
+      assert.strictEqual(result(), 'aabb')
     })
 
     test('run-s command', async () => {
       await runSeq(['test-task:append:*'])
-      assert(result() === 'aabb')
+      assert.strictEqual(result(), 'aabb')
     })
 
     test('run-p command', async () => {
       await runPar(['test-task:append:*'])
-      assert(
-        result() === 'abab' ||
-                result() === 'abba' ||
-                result() === 'baba' ||
-                result() === 'baab'
-      )
+      const validResults = new Set(['abab', 'abba', 'baba', 'baab'])
+      const actual = result()
+      assert.ok(validResults.has(actual), `Unexpected result: ${actual}`)
     })
   })
 
   describe('"test-task:append:**" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
     test('Node API', async () => {
       await nodeApi('test-task:append:**')
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['test-task:append:**'])
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
 
     test('run-s command', async () => {
       await runSeq(['test-task:append:**'])
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
   })
 
@@ -72,44 +68,43 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   describe('"test-task:append:**:*" to "test-task:append:a", "test-task:append:a:c", "test-task:append:a:d", and "test-task:append:b"', () => {
     test('Node API', async () => {
       await nodeApi('test-task:append:**:*')
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['test-task:append:**:*'])
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
 
     test('run-s command', async () => {
       await runSeq(['test-task:append:**:*'])
-      assert(result() === 'aaacacadadbb')
+      assert.strictEqual(result(), 'aaacacadadbb')
     })
   })
 
   describe('(should ignore duplications) "test-task:append:b" "test-task:append:*" to "test-task:append:b", "test-task:append:a"', () => {
     test('Node API', async () => {
       await nodeApi(['test-task:append:b', 'test-task:append:*'])
-      assert(result() === 'bbaa')
+      assert.strictEqual(result(), 'bbaa')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['test-task:append:b', 'test-task:append:*'])
-      assert(result() === 'bbaa')
+      assert.strictEqual(result(), 'bbaa')
     })
 
     test('run-s command', async () => {
       await runSeq(['test-task:append:b', 'test-task:append:*'])
-      assert(result() === 'bbaa')
+      assert.strictEqual(result(), 'bbaa')
     })
 
     test('run-p command', async () => {
       await runPar(['test-task:append:b', 'test-task:append:*'])
-      assert(
-        result() === 'baba' ||
-                result() === 'baab' ||
-                result() === 'abab' ||
-                result() === 'abba'
-      )
+
+      const actual = result()
+      const validResults = new Set(['baba', 'baab', 'abab', 'abba'])
+
+      assert.ok(validResults.has(actual), `Unexpected result: ${actual}`)
     })
   })
 
