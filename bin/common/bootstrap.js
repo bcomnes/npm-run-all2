@@ -3,26 +3,29 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Public Interface
 // ------------------------------------------------------------------------------
 
-module.exports = function bootstrap (name) {
+export default async function bootstrap (name) {
   const argv = process.argv.slice(2)
 
   switch (argv[0]) {
     case undefined:
     case '-h':
-    case '--help':
-      return require(`../${name}/help`)(process.stdout)
+    case '--help': {
+      const { default: help } = await import(`../${name}/help.js`)
+      return help(process.stdout)
+    }
 
     case '-v':
-    case '--version':
-      return require('./version')(process.stdout)
+    case '--version': {
+      const { default: version } = await import('./version.js')
+      return version(process.stdout)
+    }
 
-    default:
+    default: {
       // https://github.com/mysticatea/npm-run-all/issues/105
       // Avoid MaxListenersExceededWarnings.
       process.stdout.setMaxListeners(0)
@@ -30,7 +33,8 @@ module.exports = function bootstrap (name) {
       process.stdin.setMaxListeners(0)
 
       // Main
-      return require(`../${name}/main`)(
+      const { default: main } = await import(`../${name}/main.js`)
+      return main(
         argv,
         process.stdout,
         process.stderr
@@ -44,5 +48,6 @@ module.exports = function bootstrap (name) {
           process.exit(1)
         }
       )
+    }
   }
 }

@@ -9,7 +9,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const stream = require('stream')
+const stream = require('node:stream')
 
 // ------------------------------------------------------------------------------
 // Public Interface
@@ -18,7 +18,7 @@ const stream = require('stream')
 /**
  * The stream to accumulate written data as a single string.
  */
-module.exports = class BufferStream extends stream.Writable {
+class BufferStream extends stream.Writable {
   /**
      * Initialize the current data as a empty string.
      */
@@ -45,3 +45,5 @@ module.exports = class BufferStream extends stream.Writable {
     callback()
   }
 }
+
+module.exports = BufferStream

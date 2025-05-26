@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: ['20', 'lts/*', '23']
+        node: ['20', '22', '24']
 
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm i
-      - run: npm run test
+      - run: npm run test:node-test
       - uses: codecov/codecov-action@v5
         if: ${{ github.event_name == 'pull_request' }}
         with:

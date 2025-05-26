@@ -3,16 +3,15 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach, afterEach } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const { delay, removeResult, runAll, runPar, runSeq } = require('./lib/util')
+import { test, describe, before, after, beforeEach, afterEach } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from 'npm-run-all2'
+import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -26,7 +25,7 @@ const { delay, removeResult, runAll, runPar, runSeq } = require('./lib/util')
  */
 function shouldFail (p) {
   return p.then(
-    () => assert(false, 'should fail'),
+    () => assert.fail('should fail'),
     () => null // OK!
   )
 }
@@ -106,13 +105,13 @@ describe('[fail] it should fail', () => {
     test('with correct exit code', async () => {
       try {
         await nodeApi('test-task:abort')
-        assert(false, 'should fail')
+        assert.fail('should fail')
       } catch (err) {
         // In NodeJS versions > 6, the child process correctly sends back
         // the signal + code of null. In NodeJS versions <= 6, the child
         // process does not set the signal, and sets the code to 1.
         const code = Number(process.version.match(/^v(\d+)/)[1]) > 6 ? 134 : 1
-        assert(err.code === code, 'should have correct exit code')
+        assert.strictEqual(err.code, code, 'should have correct exit code')
       }
     })
   })
