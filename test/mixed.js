@@ -3,15 +3,14 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const { result, removeResult, runAll } = require('./lib/util')
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
+import { result, removeResult, runAll } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test
@@ -29,11 +28,12 @@ describe('[mixed] npm-run-all', () => {
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
     ])
-    assert(
+    assert.ok(
       result() === 'aabcbcddee' ||
             result() === 'aabccbddee' ||
             result() === 'aacbbcddee' ||
-            result() === 'aacbcbddee'
+            result() === 'aacbcbddee',
+      `Expected result to match one of the patterns but got: ${result()}`
     )
   })
 
@@ -42,11 +42,12 @@ describe('[mixed] npm-run-all', () => {
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
     ])
-    assert(
+    assert.ok(
       result() === 'bcbcddee' ||
             result() === 'bccbddee' ||
             result() === 'cbbcddee' ||
-            result() === 'cbcbddee'
+            result() === 'cbcbddee',
+      `Expected result to match one of the patterns but got: ${result()}`
     )
   })
 

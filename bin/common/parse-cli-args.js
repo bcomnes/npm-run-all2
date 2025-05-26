@@ -3,7 +3,6 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -238,6 +237,6 @@ function parseCLIArgsCore (set, args) {
  * @param {boolean} options.singleMode - The flag to be single group mode.
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
-module.exports = function parseCLIArgs (args, initialValues, options) {
+export default function parseCLIArgs (args, initialValues, options) {
   return parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
 }

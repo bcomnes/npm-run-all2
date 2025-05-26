@@ -1,6 +1,6 @@
 {
   "name": "npm-run-all2",
-  "type": "commonjs",
+  "type": "module",
   "version": "8.0.4",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential. (Maintenance fork)",
   "bin": {
@@ -9,7 +9,14 @@
     "npm-run-all": "bin/npm-run-all/index.js",
     "npm-run-all2": "bin/npm-run-all/index.js"
   },
-  "main": "lib/index.js",
+  "main": "lib/cjs.cjs",
+  "exports": {
+    ".": {
+      "import": "./lib/esm.mjs",
+      "require": "./lib/cjs.cjs"
+    },
+    "./*": "./*"
+  },
   "engines": {
     "node": "^20.5.0 || >=22.0.0",
     "npm": ">= 10"
@@ -25,7 +32,7 @@
     "pretest": "node scripts/make-slink.js",
     "test": "node ./bin/run-s/index.js test:*",
     "test:check": "npm run check",
-    "test:node-test": "c8 node --test --test-reporter spec --test-concurrency=1",
+    "test:node-test": "c8 node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000",
     "watch": "node --watch --test",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "prepublishOnly": "git push --follow-tags && gh-release -y"
