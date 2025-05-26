@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm i
-      - run: npm run test-mocha
+      - run: npm run test
       - uses: codecov/codecov-action@v5
         if: ${{ github.event_name == 'pull_request' }}
         with:

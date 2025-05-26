@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after, beforeEach } = require('node:test')
+const assert = require('node:assert/strict')
 const spawn = require('cross-spawn')
 const BufferStream = require('./lib/buffer-stream')
 const { result, removeResult } = require('./lib/util')
@@ -51,10 +52,10 @@ const nodeVersion = Number(process.versions.node.split('.')[0])
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
 
-  beforeEach(removeResult)
+  beforeEach(() => removeResult())
 
   describe("'yarn run' command", () => {
-    it("should run 'npm-run-all' in scripts with yarn.", async () => {
+    test("should run 'npm-run-all' in scripts with yarn.", async () => {
       await exec('yarn', ['run', 'test-task:yarn'])
       assert(result() === 'aabb')
     })

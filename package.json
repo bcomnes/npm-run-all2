@@ -22,10 +22,11 @@
     "check:knip": "knip",
     "precheck": "node scripts/make-slink.js",
     "check": "node ./bin/run-p/index.js check:*",
-    "pretest-mocha": "node scripts/make-slink.js",
-    "test-mocha": "c8 mocha --timeout 120000",
-    "test": "node ./bin/run-s/index.js check test-mocha",
-    "watch": "mocha --timeout 120000 --watch --growl",
+    "pretest": "node scripts/make-slink.js",
+    "test": "node ./bin/run-s/index.js test:*",
+    "test:check": "npm run check",
+    "test:node-test": "c8 node --test --test-reporter spec --test-concurrency=1",
+    "watch": "node --watch --test",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "prepublishOnly": "git push --follow-tags && gh-release -y"
   },
@@ -47,7 +48,6 @@
     "installed-check": "^9.3.0",
     "jsdoc": "^4.0.0",
     "knip": "^5.23.3",
-    "mocha": "^11.0.1",
     "neostandard": "^0.12.0",
     "yarn": "^1.12.3"
   },

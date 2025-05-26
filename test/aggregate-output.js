@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after, beforeEach } = require('node:test')
+const assert = require('node:assert/strict')
 const nodeApi = require('../lib')
 const BufferStream = require('./lib/buffer-stream')
 const util = require('./lib/util')
@@ -48,7 +49,7 @@ describe('[aggregated-output] npm-run-all', () => {
       stdout = new BufferStream()
     })
 
-    it('Node API with parallel', async () => {
+    test('Node API with parallel', async () => {
       await nodeApi(
         ['test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000'],
         { stdout, parallel: true, silent: true, aggregateOutput: true }
@@ -56,7 +57,7 @@ describe('[aggregated-output] npm-run-all', () => {
       assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
 
-    it('Node API without parallel should fail', async () => {
+    test('Node API without parallel should fail', async () => {
       try {
         await nodeApi(
           ['test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000'],
@@ -68,7 +69,7 @@ describe('[aggregated-output] npm-run-all', () => {
       assert(false, 'should fail')
     })
 
-    it('npm-run-all command with parallel', async () => {
+    test('npm-run-all command with parallel', async () => {
       await runAll(
         ['--parallel', 'test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000', '--silent', '--aggregate-output'],
         stdout
@@ -76,7 +77,7 @@ describe('[aggregated-output] npm-run-all', () => {
       assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
 
-    it('npm-run-all command without parallel should fail', async () => {
+    test('npm-run-all command without parallel should fail', async () => {
       try {
         await runAll(
           ['test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000', '--silent', '--aggregate-output'],
@@ -88,7 +89,7 @@ describe('[aggregated-output] npm-run-all', () => {
       assert(false, 'should fail')
     })
 
-    it('run-s command should fail', async () => {
+    test('run-s command should fail', async () => {
       try {
         await runSeq(
           ['test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000', '--silent', '--aggregate-output'],
@@ -100,7 +101,7 @@ describe('[aggregated-output] npm-run-all', () => {
       assert(false, 'should fail')
     })
 
-    it('run-p command', async () => {
+    test('run-p command', async () => {
       await runPar(
         [
           'test-task:delayed first 5000',

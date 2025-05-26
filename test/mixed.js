@@ -9,7 +9,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const assert = require('assert').strict
+const { test, describe, before, after, beforeEach } = require('node:test')
+const assert = require('node:assert/strict')
 const { result, removeResult, runAll } = require('./lib/util')
 
 // ------------------------------------------------------------------------------
@@ -20,9 +21,9 @@ describe('[mixed] npm-run-all', () => {
   before(() => process.chdir('test-workspace'))
   after(() => process.chdir('..'))
 
-  beforeEach(removeResult)
+  beforeEach(() => removeResult())
 
-  it('should run a mix of sequential and parallel tasks (has the default group):', async () => {
+  test('should run a mix of sequential and parallel tasks (has the default group):', async () => {
     await runAll([
       'test-task:append a',
       '-p', 'test-task:append b', 'test-task:append c',
@@ -36,7 +37,7 @@ describe('[mixed] npm-run-all', () => {
     )
   })
 
-  it("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
+  test("should run a mix of sequential and parallel tasks (doesn't have the default group):", async () => {
     await runAll([
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
@@ -49,8 +50,8 @@ describe('[mixed] npm-run-all', () => {
     )
   })
 
-  it('should not throw errors for --race and --max-parallel options if --parallel exists:', () =>
-    runAll([
+  test('should not throw errors for --race and --max-parallel options if --parallel exists:', async () =>
+    await runAll([
       'test-task:append a',
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
