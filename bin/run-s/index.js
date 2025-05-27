@@ -4,10 +4,11 @@
  * @copyright 2015 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Main
 // ------------------------------------------------------------------------------
 
-require('../common/bootstrap')('run-s')
+import bootstrap from '../common/bootstrap.js'
+
+bootstrap('run-s')

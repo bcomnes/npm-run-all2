@@ -1,6 +1,6 @@
 'use strict'
 
-const appendResult = require('./lib/util').appendResult
+const appendResult = require('./lib/util.cjs').appendResult
 
 process.stdin.on('data', (chunk) => {
   appendResult(chunk.toString())
