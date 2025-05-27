@@ -169,7 +169,7 @@ describe('[argument-placeholders]', () => {
     test('run-p command', async () => {
       await runPar(['test-task:dump {%}', '--', '1st', '2nd'])
       const value = result()
-      assert(value === '["1st"]["2nd"]' || value === '["2nd"]["1st"]')
+      assert.ok(value === '["1st"]["2nd"]' || value === '["2nd"]["1st"]', `Expected value to be either '["1st"]["2nd"]' or '["2nd"]["1st"]', but got '${value}'`)
     })
   })
 

@@ -112,9 +112,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('Node API', async () => {
       try {
         await nodeApi('a')
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (err) {
-        assert((/not found/i).test(err.message))
+        assert.match(err.message, /not found/i, `Expected error message to contain 'not found', but got: ${err.message}`)
       }
     })
 
@@ -122,9 +122,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runAll(['a'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
 
@@ -132,9 +132,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runSeq(['a'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
 
@@ -142,9 +142,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runPar(['a'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
   })
@@ -153,9 +153,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('Node API', async () => {
       try {
         await nodeApi('!test-task:**')
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (err) {
-        assert((/not found/i).test(err.message))
+        assert.match(err.message, /not found/i, `Expected error message to contain 'not found', but got: ${err.message}`)
       }
     })
 
@@ -163,9 +163,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runAll(['!test-task:**'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
 
@@ -173,9 +173,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runSeq(['!test-task:**'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
 
@@ -183,9 +183,9 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const stderr = new BufferStream()
       try {
         await runPar(['!test-task:**'], null, stderr)
-        assert(false, 'should not match')
+        assert.fail('should not match')
       } catch (_err) {
-        assert((/not found/i).test(stderr.value))
+        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
       }
     })
   })
@@ -193,22 +193,23 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   describe('"!test" "?test" to "!test", "?test"', () => {
     test('Node API', async () => {
       await nodeApi(['!test', '?test'])
-      assert(result().trim() === 'XQ')
+      assert.strictEqual(result().trim(), 'XQ')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['!test', '?test'])
-      assert(result().trim() === 'XQ')
+      assert.strictEqual(result().trim(), 'XQ')
     })
 
     test('run-s command', async () => {
       await runSeq(['!test', '?test'])
-      assert(result().trim() === 'XQ')
+      assert.strictEqual(result().trim(), 'XQ')
     })
 
     test('run-p command', async () => {
       await runPar(['!test', '?test'])
-      assert(result().trim() === 'XQ' || result().trim() === 'QX')
+      const actual = result().trim()
+      assert.ok(actual === 'XQ' || actual === 'QX', `Expected result to be 'XQ' or 'QX', but got: ${actual}`)
     })
   })
 })

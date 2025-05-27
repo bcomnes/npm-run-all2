@@ -54,7 +54,7 @@ describe('[yarn]', () => {
   describe("'yarn run' command", () => {
     test("should run 'npm-run-all' in scripts with yarn.", async () => {
       await exec('yarn', ['run', 'test-task:yarn'])
-      assert(result() === 'aabb')
+      assert.strictEqual(result(), 'aabb')
     })
   })
 })

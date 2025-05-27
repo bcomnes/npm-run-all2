@@ -28,19 +28,19 @@ describe('common', async () => {
     test('npm-run-all command', async () => {
       const buf = new BufferStream()
       await runAll([], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-s command', async () => {
       const buf = new BufferStream()
       await runSeq([], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-p command', async () => {
       const buf = new BufferStream()
       await runPar([], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
   })
 
@@ -48,37 +48,37 @@ describe('common', async () => {
     test('npm-run-all command (-h)', async () => {
       const buf = new BufferStream()
       await runAll(['-h'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-s command (-h)', async () => {
       const buf = new BufferStream()
       await runSeq(['-h'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-p command (-h)', async () => {
       const buf = new BufferStream()
       await runPar(['-h'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('npm-run-all command (--help)', async () => {
       const buf = new BufferStream()
       await runAll(['--help'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-s command (--help)', async () => {
       const buf = new BufferStream()
       await runSeq(['--help'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
 
     test('run-p command (--help)', async () => {
       const buf = new BufferStream()
       await runPar(['--help'], buf)
-      assert.ok(/Usage:/.test(buf.value))
+      assert.match(buf.value, /Usage:/, 'Expected output to contain usage information')
     })
   })
 
@@ -86,37 +86,37 @@ describe('common', async () => {
     test('npm-run-all command (-v)', async () => {
       const buf = new BufferStream()
       await runAll(['-v'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
 
     test('run-s command (-v)', async () => {
       const buf = new BufferStream()
       await runSeq(['-v'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
 
     test('run-p command (-v)', async () => {
       const buf = new BufferStream()
       await runPar(['-v'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
 
     test('npm-run-all command (--version)', async () => {
       const buf = new BufferStream()
       await runAll(['--version'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
 
     test('run-s command (--version)', async () => {
       const buf = new BufferStream()
       await runSeq(['--version'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
 
     test('run-p command (--version)', async () => {
       const buf = new BufferStream()
       await runPar(['--version'], buf)
-      assert.ok(/v[0-9]+\.[0-9]+\.[0-9]+/.test(buf.value))
+      assert.match(buf.value, /v[0-9]+\.[0-9]+\.[0-9]+/, 'Expected output to contain version number')
     })
   })
 
@@ -311,19 +311,19 @@ describe('common', async () => {
     test('npm-run-all command', async () => {
       const buf = new BufferStream()
       await runAll(tasks, null, buf)
-      assert.strictEqual(buf.value.indexOf('MaxListenersExceededWarning'), -1)
+      assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
 
     test('run-s command', async () => {
       const buf = new BufferStream()
       await runSeq(tasks, null, buf)
-      assert.strictEqual(buf.value.indexOf('MaxListenersExceededWarning'), -1)
+      assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
 
     test('run-p command', async () => {
       const buf = new BufferStream()
       await runPar(tasks, null, buf)
-      assert.strictEqual(buf.value.indexOf('MaxListenersExceededWarning'), -1)
+      assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
   })
 })

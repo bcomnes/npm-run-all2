@@ -25,7 +25,7 @@ import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
  */
 function shouldFail (p) {
   return p.then(
-    () => assert(false, 'should fail'),
+    () => assert.fail('should fail'),
     () => null // OK!
   )
 }
@@ -105,13 +105,13 @@ describe('[fail] it should fail', () => {
     test('with correct exit code', async () => {
       try {
         await nodeApi('test-task:abort')
-        assert(false, 'should fail')
+        assert.fail('should fail')
       } catch (err) {
         // In NodeJS versions > 6, the child process correctly sends back
         // the signal + code of null. In NodeJS versions <= 6, the child
         // process does not set the signal, and sets the code to 1.
         const code = Number(process.version.match(/^v(\d+)/)[1]) > 6 ? 134 : 1
-        assert(err.code === code, 'should have correct exit code')
+        assert.strictEqual(err.code, code, 'should have correct exit code')
       }
     })
   })

@@ -50,7 +50,7 @@ describe('[aggregated-output] npm-run-all', () => {
         ['test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000'],
         { stdout, parallel: true, silent: true, aggregateOutput: true }
       )
-      assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
 
     test('Node API without parallel should fail', async () => {
@@ -62,7 +62,7 @@ describe('[aggregated-output] npm-run-all', () => {
       } catch (_err) {
         return
       }
-      assert(false, 'should fail')
+      assert.fail('should fail')
     })
 
     test('npm-run-all command with parallel', async () => {
@@ -70,7 +70,7 @@ describe('[aggregated-output] npm-run-all', () => {
         ['--parallel', 'test-task:delayed first 5000', 'test-task:delayed second 1000', 'test-task:delayed third 3000', '--silent', '--aggregate-output'],
         stdout
       )
-      assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
 
     test('npm-run-all command without parallel should fail', async () => {
@@ -82,7 +82,7 @@ describe('[aggregated-output] npm-run-all', () => {
       } catch (_err) {
         return
       }
-      assert(false, 'should fail')
+      assert.fail('should fail')
     })
 
     test('run-s command should fail', async () => {
@@ -94,7 +94,7 @@ describe('[aggregated-output] npm-run-all', () => {
       } catch (_err) {
         return
       }
-      assert(false, 'should fail')
+      assert.fail('should fail')
     })
 
     test('run-p command', async () => {
@@ -107,7 +107,7 @@ describe('[aggregated-output] npm-run-all', () => {
         ],
         stdout
       )
-      assert.equal(stdout.value, EXPECTED_PARALLELIZED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
   })
 })

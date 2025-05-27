@@ -28,11 +28,12 @@ describe('[mixed] npm-run-all', () => {
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
     ])
-    assert(
+    assert.ok(
       result() === 'aabcbcddee' ||
             result() === 'aabccbddee' ||
             result() === 'aacbbcddee' ||
-            result() === 'aacbcbddee'
+            result() === 'aacbcbddee',
+      `Expected result to match one of the patterns but got: ${result()}`
     )
   })
 
@@ -41,11 +42,12 @@ describe('[mixed] npm-run-all', () => {
       '-p', 'test-task:append b', 'test-task:append c',
       '-s', 'test-task:append d', 'test-task:append e',
     ])
-    assert(
+    assert.ok(
       result() === 'bcbcddee' ||
             result() === 'bccbddee' ||
             result() === 'cbbcddee' ||
-            result() === 'cbcbddee'
+            result() === 'cbcbddee',
+      `Expected result to match one of the patterns but got: ${result()}`
     )
   })
 
