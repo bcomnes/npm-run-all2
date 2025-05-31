@@ -29,10 +29,9 @@
     "check:knip": "knip",
     "precheck": "node scripts/make-slink.js",
     "check": "node ./bin/run-p/index.js check:*",
-    "pretest": "node scripts/make-slink.js",
     "test": "node ./bin/run-s/index.js test:*",
     "test:check": "npm run check",
-    "test:node-test": "c8 node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000",
+    "test:node-test": "node scripts/make-slink.js && c8 node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000",
     "watch": "node --watch --test",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
     "prepublishOnly": "git push --follow-tags && gh-release -y"
