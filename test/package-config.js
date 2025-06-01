@@ -8,7 +8,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import nodeApi from 'npm-run-all2'

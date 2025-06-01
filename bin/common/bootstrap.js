@@ -15,14 +15,14 @@ export default async function bootstrap (name) {
     case undefined:
     case '-h':
     case '--help': {
-      const help = await import(`../${name}/help.js`)
-      return help.default(process.stdout)
+      const { default: help } = await import(`../${name}/help.js`)
+      return help(process.stdout)
     }
 
     case '-v':
     case '--version': {
-      const version = await import('./version.js')
-      return version.default(process.stdout)
+      const { default: version } = await import('./version.js')
+      return version(process.stdout)
     }
 
     default: {
@@ -33,8 +33,8 @@ export default async function bootstrap (name) {
       process.stdin.setMaxListeners(0)
 
       // Main
-      const main = await import(`../${name}/main.js`)
-      return main.default(
+      const { default: main } = await import(`../${name}/main.js`)
+      return main(
         argv,
         process.stdout,
         process.stderr

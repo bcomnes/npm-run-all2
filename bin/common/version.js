@@ -8,12 +8,10 @@
 // Public Interface
 // ------------------------------------------------------------------------------
 
-import { readFile } from 'fs/promises'
-import { fileURLToPath } from 'url'
-import { dirname, resolve } from 'path'
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __dirname = import.meta.dirname
 
 /**
  * Print a version text.
