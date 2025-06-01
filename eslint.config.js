@@ -1,9 +1,8 @@
-'use strict'
+import neostandard from 'neostandard'
 
-module.exports = [
-  ...require('neostandard')({
-    env: ['node', 'mocha'],
-    ignores: require('neostandard').resolveIgnoresFromGitignore(),
+export default [
+  ...neostandard({
+    ignores: neostandard.resolveIgnoresFromGitignore(),
     ts: true,
   }),
 ]

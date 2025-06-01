@@ -3,10 +3,11 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
-const fs = require('fs')
-const path = require('path')
+import fs from 'node:fs'
+import path from 'node:path'
+
+const __dirname = import.meta.dirname
 
 try {
   fs.symlinkSync(

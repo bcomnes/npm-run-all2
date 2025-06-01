@@ -3,18 +3,17 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after, beforeEach } = require('node:test')
-const assert = require('node:assert/strict')
-const { strictEqual } = assert
+import { test, describe, before, after, beforeEach } from 'node:test'
+import assert from 'node:assert/strict'
 
-const nodeApi = require('../lib')
-const { result, removeResult, runAll, runPar, runSeq } = require('./lib/util')
+import nodeApi from 'npm-run-all2'
+import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
+const { strictEqual } = assert
 
 // ------------------------------------------------------------------------------
 // Test
@@ -170,7 +169,7 @@ describe('[argument-placeholders]', () => {
     test('run-p command', async () => {
       await runPar(['test-task:dump {%}', '--', '1st', '2nd'])
       const value = result()
-      assert(value === '["1st"]["2nd"]' || value === '["2nd"]["1st"]')
+      assert.ok(value === '["1st"]["2nd"]' || value === '["2nd"]["1st"]', `Expected value to be either '["1st"]["2nd"]' or '["2nd"]["1st"]', but got '${value}'`)
     })
   })
 

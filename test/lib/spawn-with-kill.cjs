@@ -9,18 +9,17 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const spawn = require('../../lib/spawn')
+const spawn = require('../../lib/spawn').default
 
 // ------------------------------------------------------------------------------
 // Public Interface
 // ------------------------------------------------------------------------------
 
-module.exports = function spawnWithKill (command, args) {
-  return new Promise((resolve, reject) => {
-    const cp = spawn(command, args, {})
+module.exports = async function spawnWithKill (command, args) {
+  const cp = await spawn(command, args, {})
+  return await new Promise((resolve, reject) => {
     cp.on('exit', resolve)
     cp.on('error', reject)
-
     setTimeout(() => cp.kill(), 1000)
   })
 }

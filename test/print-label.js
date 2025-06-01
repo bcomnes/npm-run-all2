@@ -3,20 +3,16 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
-'use strict'
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-const { test, describe, before, after } = require('node:test')
-const assert = require('node:assert/strict')
-const nodeApi = require('../lib')
-const BufferStream = require('./lib/buffer-stream')
-const util = require('./lib/util')
-const runAll = util.runAll
-const runPar = util.runPar
-const runSeq = util.runSeq
+import { test, describe, before, after } from 'node:test'
+import assert from 'node:assert/strict'
+import nodeApi from 'npm-run-all2'
+import BufferStream from './lib/buffer-stream.cjs'
+import { runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
 // Test
@@ -48,43 +44,43 @@ describe('[print-label] npm-run-all', () => {
     test('Node API', async () => {
       const stdout = new BufferStream()
       await nodeApi('test-task:echo abc', { stdout, silent: true, printLabel: true })
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('npm-run-all command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '--print-label'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('run-s command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '--print-label'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('run-p command (--print-label)', async () => {
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '--print-label'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('npm-run-all command (-l)', async () => {
       const stdout = new BufferStream()
       await runAll(['test-task:echo abc', '--silent', '-l'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('run-s command (-l)', async () => {
       const stdout = new BufferStream()
       await runSeq(['test-task:echo abc', '--silent', '-l'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('run-p command (-l)', async () => {
       const stdout = new BufferStream()
       await runPar(['test-task:echo abc', '--silent', '-l'], stdout)
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
   })
 
@@ -143,7 +139,7 @@ describe('[print-label] npm-run-all', () => {
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab'],
         { stdout, silent: true, printLabel: true }
       )
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('npm-run-all command', async () => {
@@ -152,7 +148,7 @@ describe('[print-label] npm-run-all', () => {
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--silent', '--print-label'],
         stdout
       )
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
 
     test('run-s command', async () => {
@@ -161,7 +157,7 @@ describe('[print-label] npm-run-all', () => {
         ['test-task:echo a', 'test-task:echo abcd', 'test-task:echo ab', '--silent', '--print-label'],
         stdout
       )
-      assert.equal(stdout.value, EXPECTED_TEXT)
+      assert.strictEqual(stdout.value, EXPECTED_TEXT)
     })
   })
 
@@ -187,10 +183,10 @@ describe('[print-label] npm-run-all', () => {
         { stdout, parallel: true, printLabel: true }
       )
       for (const line of EXPECTED_LINES) {
-        assert(stdout.value.indexOf(line) !== -1)
+        assert.ok(stdout.value.includes(line), `Expected output to include "${line}"`)
       }
       for (const pattern of UNEXPECTED_PATTERNS) {
-        assert(!pattern.test(stdout.value))
+        assert.doesNotMatch(stdout.value, pattern, `Expected output not to match pattern ${pattern}`)
       }
     })
 
@@ -201,10 +197,10 @@ describe('[print-label] npm-run-all', () => {
         stdout
       )
       for (const line of EXPECTED_LINES) {
-        assert(stdout.value.indexOf(line) !== -1)
+        assert.ok(stdout.value.includes(line), `Expected output to include "${line}"`)
       }
       for (const pattern of UNEXPECTED_PATTERNS) {
-        assert(!pattern.test(stdout.value))
+        assert.doesNotMatch(stdout.value, pattern, `Expected output not to match pattern ${pattern}`)
       }
     })
 
@@ -215,10 +211,10 @@ describe('[print-label] npm-run-all', () => {
         stdout
       )
       for (const line of EXPECTED_LINES) {
-        assert(stdout.value.indexOf(line) !== -1)
+        assert.ok(stdout.value.includes(line), `Expected output to include "${line}"`)
       }
       for (const pattern of UNEXPECTED_PATTERNS) {
-        assert(!pattern.test(stdout.value))
+        assert.doesNotMatch(stdout.value, pattern, `Expected output not to match pattern ${pattern}`)
       }
     })
   })

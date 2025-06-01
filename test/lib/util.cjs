@@ -9,10 +9,10 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-const cp = require('child_process')
-const fs = require('fs')
-const path = require('path')
-const BufferStream = require('./buffer-stream')
+const cp = require('node:child_process')
+const fs = require('node:fs')
+const path = require('node:path')
+const BufferStream = require('./buffer-stream.cjs')
 
 // ------------------------------------------------------------------------------
 // Helpers
@@ -72,7 +72,7 @@ function spawn (filePath, args, stdout, stderr) {
  *
  * @returns {string|null} The result text.
  */
-module.exports.result = function result () {
+function result () {
   try {
     return fs.readFileSync(FILE_NAME, { encoding: 'utf8' })
   } catch (err) {
@@ -89,7 +89,7 @@ module.exports.result = function result () {
  * @param {string} content - A text to append.
  * @returns {void}
  */
-module.exports.appendResult = function appendResult (content) {
+function appendResult (content) {
   fs.appendFileSync(FILE_NAME, content)
 }
 
@@ -98,7 +98,7 @@ module.exports.appendResult = function appendResult (content) {
  *
  * @returns {void}
  */
-module.exports.removeResult = function removeResult () {
+function removeResult () {
   try {
     fs.unlinkSync(FILE_NAME)
   } catch (err) {
@@ -115,7 +115,7 @@ module.exports.removeResult = function removeResult () {
  * @param {number} timeoutInMillis - The time to delay.
  * @returns {Promise<void>} The promise which fulfilled after the given time.
  */
-module.exports.delay = function delay (timeoutInMillis) {
+function delay (timeoutInMillis) {
   return new Promise(resolve => {
     setTimeout(resolve, timeoutInMillis)
   })
@@ -130,7 +130,7 @@ module.exports.delay = function delay (timeoutInMillis) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-module.exports.runAll = function runAll (args, stdout, stderr) {
+function runAll (args, stdout, stderr) {
   return spawn(NPM_RUN_ALL, args, stdout, stderr)
 }
 
@@ -143,7 +143,7 @@ module.exports.runAll = function runAll (args, stdout, stderr) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-module.exports.runPar = function runPar (args, stdout, stderr) {
+function runPar (args, stdout, stderr) {
   return spawn(RUN_P, args, stdout, stderr)
 }
 
@@ -156,6 +156,16 @@ module.exports.runPar = function runPar (args, stdout, stderr) {
  * @returns {Promise<void>} The promise which becomes fulfilled if the child
  *  process finished.
  */
-module.exports.runSeq = function runSeq (args, stdout, stderr) {
+function runSeq (args, stdout, stderr) {
   return spawn(RUN_S, args, stdout, stderr)
+}
+
+module.exports = {
+  result,
+  appendResult,
+  removeResult,
+  delay,
+  runAll,
+  runPar,
+  runSeq
 }
