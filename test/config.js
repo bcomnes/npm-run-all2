@@ -67,7 +67,7 @@ describe('[config] it should have an ability to set config variables:', () => {
     })
   })
 
-  describe('CLI commands should transfar configs to nested commands.', () => {
+  describe('CLI commands should transfer configs to nested commands.', () => {
     test('npm-run-all command', async () => {
       await runAll(['test-task:nested-config', '--test=GO DEEP'])
       assert.strictEqual(result(), 'GO DEEP')
