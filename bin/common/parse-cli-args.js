@@ -203,7 +203,7 @@ function parseCLIArgsCore (set, args) {
             set,
             arg.slice(1).split('').map(c => `-${c}`)
           )
-        } else if (arg[0] === '-') {
+        } else if (arg.startsWith('-')) {
           throw new Error(`Invalid Option: ${arg}`)
         } else {
           set.lastGroup.patterns.push(arg)
