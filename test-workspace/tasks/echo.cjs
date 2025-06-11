@@ -16,7 +16,7 @@ function flow () {
 
   head()
   setTimeout(() => {
-    flow.apply(null, rest)
+    flow(...rest)
   }, 33)
 }
 
