@@ -58,10 +58,11 @@ function createPackageConfig () {
  * @returns {void}
  */
 function addGroup (groups, initialValues) {
-  groups.push(Object.assign(
-    { parallel: false, patterns: [] },
-    initialValues || {}
-  ))
+  groups.push({
+    parallel: false,
+    patterns: [],
+    ...(initialValues || {})
+  })
 }
 
 /**
