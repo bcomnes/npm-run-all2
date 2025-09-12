@@ -10,6 +10,8 @@
 // Main
 // ------------------------------------------------------------------------------
 
-import bootstrap from '#bin/common/bootstrap.js'
+import { enableCompileCache } from 'node:module'
+enableCompileCache?.()
 
+const { default: bootstrap } = await import('#bin/common/bootstrap.js')
 bootstrap('run-p')
