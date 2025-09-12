@@ -12,6 +12,7 @@ on:
 
 env:
   FORCE_COLOR: 2
+  NODE_DISABLE_COMPILE_CACHE: 1
 
 jobs:
   lint:
