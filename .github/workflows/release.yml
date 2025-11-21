@@ -18,7 +18,7 @@ jobs:
   version_and_release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           # fetch full history so things like auto-changelog work properly
           fetch-depth: 0
