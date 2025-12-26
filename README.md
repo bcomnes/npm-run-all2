@@ -92,3 +92,7 @@ There are some npm-scripts to help developments.
 [run-s]: docs/run-s.md
 [run-p]: docs/run-p.md
 [Node API]: docs/node-api.md
+
+## Security
+
+See [SECURITY.md](./SECURITY.md) for this projects security policy.
