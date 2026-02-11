@@ -44,7 +44,7 @@
     "pidtree": "^0.6.0",
     "read-package-json-fast": "^4.0.0",
     "shell-quote": "^1.7.3",
-    "which": "^5.0.0"
+    "which": "^6.0.1"
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
