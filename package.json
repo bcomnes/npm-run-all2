@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "auto-changelog": "^2.2.0",
-    "c8": "^10.0.0",
+    "c8": "^11.0.0",
     "eslint": "^9.6.0",
     "gh-release": "^7.0.0",
     "installed-check": "^9.3.0",
