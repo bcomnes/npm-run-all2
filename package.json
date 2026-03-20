@@ -53,7 +53,7 @@
     "gh-release": "^7.0.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
-    "knip": "^5.23.3",
+    "knip": "^6.0.0",
     "neostandard": "^0.13.0",
     "yarn": "^1.12.3"
   },
