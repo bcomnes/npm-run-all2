@@ -83,6 +83,10 @@
     "url": "https://github.com/bcomnes/npm-run-all2/issues"
   },
   "homepage": "https://github.com/bcomnes/npm-run-all2",
+  "files": [
+    "bin",
+    "lib"
+  ],
   "c8": {
     "reporter": [
       "html",
