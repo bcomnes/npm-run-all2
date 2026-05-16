@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 'use strict'
@@ -35,6 +36,7 @@ class BufferStream extends stream.Writable {
   /**
      * Accumulates written data.
      *
+     * @override
      * @param {string|Buffer} chunk - A written data.
      * @param {string} _encoding - The encoding of chunk.
      * @param {function} callback - The callback to notify done.

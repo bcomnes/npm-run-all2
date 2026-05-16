@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -11,7 +12,7 @@
 import { execSync } from 'node:child_process'
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '../lib/index.js'
 import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
@@ -26,7 +27,7 @@ describe("[package-config] it should have an ability to overwrite package's conf
 
   const [major] = execSync('npm --version', { encoding: 'utf8' }).trim().split('.')
 
-  const supportsOverrides = major <= 6
+  const supportsOverrides = major != null && Number(major) <= 6
 
   if (supportsOverrides) {
     test('Node API should address "packageConfig" option', async () => {

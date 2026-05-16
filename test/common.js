@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -10,7 +11,7 @@
 
 import { test, describe, beforeEach, before, after } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '../lib/index.js'
 import BufferStream from './lib/buffer-stream.cjs'
 import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
@@ -122,6 +123,7 @@ describe('common', async () => {
 
   describe('should do nothing if a task list is empty.', async () => {
     test('Node API', async () => {
+      // @ts-expect-error nodeApi accepts null to signal "no tasks" per its documented behaviour
       await nodeApi(null)
       assert.strictEqual(result(), null)
     })
@@ -152,22 +154,30 @@ describe('common', async () => {
   describe('stdin can be used in tasks:', async () => {
     test('Node API', async () => {
       await nodeApi('test-task:stdin')
-      assert.strictEqual(result().trim(), 'STDIN')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'STDIN')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['test-task:stdin'])
-      assert.strictEqual(result().trim(), 'STDIN')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'STDIN')
     })
 
     test('run-s command', async () => {
       await runSeq(['test-task:stdin'])
-      assert.strictEqual(result().trim(), 'STDIN')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'STDIN')
     })
 
     test('run-p command', async () => {
       await runPar(['test-task:stdin'])
-      assert.strictEqual(result().trim(), 'STDIN')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'STDIN')
     })
   })
 
@@ -216,14 +226,14 @@ describe('common', async () => {
   })
 
   describe('should be able to use `restart` built-in task:', async () => {
-    test('Node API', async () => await nodeApi('restart'))
+    test('Node API', async () => { await nodeApi('restart') })
     test('npm-run-all command', async () => await runAll(['restart']))
     test('run-s command', async () => await runSeq(['restart']))
     test('run-p command', async () => await runPar(['restart']))
   })
 
   describe('should be able to use `env` built-in task:', async () => {
-    test('Node API', async () => await nodeApi('env'))
+    test('Node API', async () => { await nodeApi('env') })
     test('npm-run-all command', async () => await runAll(['env']))
     test('run-s command', async () => await runSeq(['env']))
     test('run-p command', async () => await runPar(['env']))
@@ -231,14 +241,14 @@ describe('common', async () => {
 
   if (process.platform === 'win32') {
     describe('issue14', async () => {
-      test('Node API', async () => await nodeApi('test-task:issue14:win32'))
+      test('Node API', async () => { await nodeApi('test-task:issue14:win32') })
       test('npm-run-all command', async () => await runAll(['test-task:issue14:win32']))
       test('run-s command', async () => await runSeq(['test-task:issue14:win32']))
       test('run-p command', async () => await runPar(['test-task:issue14:win32']))
     })
   } else {
     describe('issue14', async () => {
-      test('Node API', async () => await nodeApi('test-task:issue14:posix'))
+      test('Node API', async () => { await nodeApi('test-task:issue14:posix') })
       test('npm-run-all command', async () => await runAll(['test-task:issue14:posix']))
       test('run-s command', async () => await runSeq(['test-task:issue14:posix']))
       test('run-p command', async () => await runPar(['test-task:issue14:posix']))
@@ -310,19 +320,19 @@ describe('common', async () => {
 
     test('npm-run-all command', async () => {
       const buf = new BufferStream()
-      await runAll(tasks, null, buf)
+      await runAll(tasks, undefined, buf)
       assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
 
     test('run-s command', async () => {
       const buf = new BufferStream()
-      await runSeq(tasks, null, buf)
+      await runSeq(tasks, undefined, buf)
       assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
 
     test('run-p command', async () => {
       const buf = new BufferStream()
-      await runPar(tasks, null, buf)
+      await runPar(tasks, undefined, buf)
       assert.doesNotMatch(buf.value, /MaxListenersExceededWarning/, 'Should not show MaxListenersExceededWarning')
     })
   })

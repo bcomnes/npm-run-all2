@@ -1,7 +1,10 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
+ *
+ * @import NpmRunAllError from '../lib/npm-run-all-error.js'
  */
 
 // ------------------------------------------------------------------------------
@@ -10,7 +13,7 @@
 
 import { test, describe, before, after, beforeEach, afterEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '../lib/index.js'
 import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
@@ -20,13 +23,13 @@ import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 /**
  * Throws an assertion error if a given promise comes to be fulfilled.
  *
- * @param {Promise} p - A promise to check.
- * @returns {Promise} A promise which is checked.
+ * @param {Promise<unknown>} p - A promise to check.
+ * @returns {Promise<void>} A promise which is checked.
  */
 function shouldFail (p) {
   return p.then(
     () => assert.fail('should fail'),
-    () => null // OK!
+    () => undefined // OK!
   )
 }
 
@@ -53,7 +56,10 @@ describe('[fail] it should fail', () => {
   })
 
   describe('if invalid `options.taskList` is given.', () => {
-    test('Node API', async () => await shouldFail(nodeApi('test-task:append a', { taskList: { invalid: 0 } })))
+    test('Node API', async () => await shouldFail(
+      // @ts-expect-error intentionally invalid taskList to test error handling
+      nodeApi('test-task:append a', { taskList: { invalid: 0 } })
+    ))
   })
 
   describe('if unknown tasks are given:', () => {
@@ -110,8 +116,11 @@ describe('[fail] it should fail', () => {
         // In NodeJS versions > 6, the child process correctly sends back
         // the signal + code of null. In NodeJS versions <= 6, the child
         // process does not set the signal, and sets the code to 1.
-        const code = Number(process.version.match(/^v(\d+)/)[1]) > 6 ? 134 : 1
-        assert.strictEqual(err.code, code, 'should have correct exit code')
+        const match = process.version.match(/^v(\d+)/)
+        assert.ok(match != null, 'should match version string')
+        const code = Number(match[1]) > 6 ? 134 : 1
+        assert.ok(err instanceof Error, 'err should be an Error')
+        assert.strictEqual(/** @type {NpmRunAllError} */ (err).code, code, 'should have correct exit code')
       }
     })
   })

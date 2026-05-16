@@ -1,14 +1,17 @@
 /**
  * @author Toru Nagashima
  * @copyright 2015 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
+ *
+ * @import { Writable } from 'node:stream'
  */
 
 // ------------------------------------------------------------------------------
 // Requirements
 // ------------------------------------------------------------------------------
 
-import runAll from 'npm-run-all2'
+import runAll from '../../lib/index.js'
 import parseCLIArgs from '../common/parse-cli-args.js'
 
 // ------------------------------------------------------------------------------
@@ -19,9 +22,9 @@ import parseCLIArgs from '../common/parse-cli-args.js'
  * Parses arguments, then run specified npm-scripts.
  *
  * @param {string[]} args - Arguments to parse.
- * @param {stream.Writable} stdout - A writable stream to print logs.
- * @param {stream.Writable} stderr - A writable stream to print errors.
- * @returns {Promise} A promise which comes to be fulfilled when all npm-scripts are completed.
+ * @param {Writable} stdout - A writable stream to print logs.
+ * @param {Writable} stderr - A writable stream to print errors.
+ * @returns {Promise<unknown>} A promise which comes to be fulfilled when all npm-scripts are completed.
  * @private
  */
 export default function npmRunAll (args, stdout, stderr) {
@@ -55,18 +58,25 @@ export default function npmRunAll (args, stdout, stderr) {
           }
         ))
       },
-      Promise.resolve(null)
+      /** @type {Promise<unknown>} */ (Promise.resolve(null))
     )
 
     if (!argv.silent) {
-      promise.catch(err => {
-        console.error('ERROR:', err.message)
-      })
+      promise.catch(
+        /**
+         * @param {unknown} err - The rejection reason.
+         */
+        err => {
+          const message = err instanceof Error ? err.message : String(err)
+          console.error('ERROR:', message)
+        }
+      )
     }
 
     return promise
   } catch (err) {
-    console.error('ERROR:', err.message)
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('ERROR:', message)
 
     return Promise.reject(err)
   }

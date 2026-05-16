@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -10,7 +11,7 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '../lib/index.js'
 import BufferStream from './lib/buffer-stream.cjs'
 import { runAll, runPar, runSeq } from './lib/util.cjs'
 
@@ -39,7 +40,8 @@ describe('[aggregated-output] npm-run-all', () => {
       '',
     ].join('\n')
 
-    let stdout = null
+    /** @type {import('./lib/buffer-stream.cjs')} */
+    let stdout = new BufferStream()
 
     beforeEach(() => {
       stdout = new BufferStream()
