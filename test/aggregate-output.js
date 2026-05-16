@@ -40,7 +40,7 @@ describe('[aggregated-output] npm-run-all', () => {
       '',
     ].join('\n')
 
-    /** @type {import('./lib/buffer-stream.cjs')} */
+    /** @type {InstanceType<typeof BufferStream>} */
     let stdout = new BufferStream()
 
     beforeEach(() => {
