@@ -1,14 +1,28 @@
-name: npm-bump
+name: npm bump
 
 on:
   workflow_dispatch:
     inputs:
-      newversion:
-        description: 'npm version {major,minor,patch}'
+      version_type:
+        description: 'Version type'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+          - custom
+        default: 'patch'
         required: true
+      newversion:
+        description: 'Custom version (used when version_type is "custom")'
+        required: false
 
 env:
   FORCE_COLOR: 1
+
+permissions:
+  contents: write
+  id-token: write
 
 concurrency: # prevent concurrent releases
   group: npm-bump
@@ -18,25 +32,46 @@ jobs:
   version_and_release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-        with:
-          # fetch full history so things like auto-changelog work properly
-          fetch-depth: 0
-      - name: Use Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: package.json
-          # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm i
-      - run: npm test
-      - run: git status # getting odd dirty repo errors during version debug info
-      - run: git diff
-      - name: npm version && npm publish
-        uses: bcomnes/npm-bump@v2.2.1
-        with:
-          git_email: bcomnes@gmail.com
-          git_username: ${{ github.actor }}
-          newversion: ${{ github.event.inputs.newversion }}
-          github_token: ${{ secrets.GITHUB_TOKEN }} # built in actions token.  Passed tp gh-release if in use.
-          npm_token: ${{ secrets.NPM_TOKEN }} # user set secret token generated at npm
+    - uses: actions/checkout@v6
+      with:
+        # fetch full history so things like auto-changelog work properly
+        fetch-depth: 0
+    - name: Use Node.js ${{ env.node }}
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: package.json
+        # setting a registry enables the NODE_AUTH_TOKEN env variable where we can set an npm token.  REQUIRED
+        registry-url: 'https://registry.npmjs.org'
+    - run: npm i
+    - run: npm test
+    - run: git reset --hard && git clean -fd
+    - name: Resolve release version
+      id: resolve_version
+      run: |
+        set -euo pipefail
+        if [ "${{ github.event.inputs.version_type }}" = "custom" ]; then
+          if [ -z "${{ github.event.inputs.newversion }}" ]; then
+            echo "newversion is required when version_type is custom" >&2
+            exit 1
+          fi
+          echo "newversion=${{ github.event.inputs.newversion }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "newversion=${{ github.event.inputs.version_type }}" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Configure git author
+      run: |
+        git config user.name "${{ github.actor }}"
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+    - name: git status before version
+      run: git status --short --branch
+
+    - name: npm version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npm version "${{ steps.resolve_version.outputs.newversion }}"
+
+    - name: npm publish
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npm publish

@@ -33,11 +33,13 @@
     "test:check": "npm run check",
     "test:node-test": "node scripts/make-slink.js && node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000 --experimental-test-coverage",
     "watch": "node --watch --test",
-    "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
+    "preversion": "releasearoni preversion",
+    "version": "releasearoni version",
     "build": "npm run build:declaration",
     "build:declaration": "tsc -p declaration.tsconfig.json",
     "clean:declarations-lib": "find lib -type f -name '*.d.*' -delete",
-    "prepublishOnly": "npm run build && git push --follow-tags && gh-release -y"
+    "prepublishOnly": "npm run build && releasearoni",
+    "postpublish": "npm run clean"
   },
   "dependencies": {
     "ansi-styles": "^6.2.1",
@@ -56,9 +58,8 @@
     "@types/picomatch": "^3.0.2",
     "@types/shell-quote": "^1.7.5",
     "@voxpelli/tsconfig": "^16.0.0",
-    "auto-changelog": "^2.2.0",
     "eslint": "^9.6.0",
-    "gh-release": "^7.0.0",
+    "releasearoni": "^0.1.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
     "knip": "^6.0.0",
