@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true
+  },
+  "include": [
+    "types/**/*",
+    "lib/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "jsdoc",
+    "test/**/*",
+    "test-workspace/**/*"
+  ]
+}

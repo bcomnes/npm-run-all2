@@ -1,7 +1,10 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
+ *
+ * @import { Writable } from 'node:stream'
  */
 
 // ------------------------------------------------------------------------------
@@ -16,8 +19,8 @@ const __dirname = import.meta.dirname
 /**
  * Print a version text.
  *
- * @param {stream.Writable} output - A writable stream to print.
- * @returns {Promise} Always a fulfilled promise.
+ * @param {Writable} output - A writable stream to print.
+ * @returns {Promise<null>} Always a fulfilled promise.
  * @private
  */
 export default async function printVersion (output) {

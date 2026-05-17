@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -11,9 +12,10 @@
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 
-import nodeApi from 'npm-run-all2'
+import nodeApi from '#lib'
 import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
-const { strictEqual } = assert
+/** @type {typeof assert.strictEqual} */
+const strictEqual = assert.strictEqual.bind(assert)
 
 // ------------------------------------------------------------------------------
 // Test
