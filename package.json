@@ -37,7 +37,7 @@
     "build": "npm run build:declaration",
     "build:declaration": "tsc -p declaration.tsconfig.json",
     "clean:declarations-lib": "find lib -type f -name '*.d.*' -delete",
-    "prepublishOnly": "npm run build && releasearoni",
+    "prepublishOnly": "releasearoni",
     "postpublish": "npm run clean"
   },
   "dependencies": {
