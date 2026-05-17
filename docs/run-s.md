@@ -92,7 +92,7 @@ If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
 
 #### Script execution order with glob patterns
 
-When using glob patterns with `run-s`, matched scripts are run in the order they are defined in `package.json`. This ordering is guaranteed by the [ECMAScript specification](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), which requires that string-keyed properties are iterated in chronological order of creation (i.e., the order they appear in the file).
+When using glob patterns with `run-s`, matched scripts are run in the order they are defined in `package.json`. This ordering is guaranteed by the [ECMAScript specification](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), which requires that string-keyed properties are iterated in chronological order of creation (i.e., the order they appear in the file). Note: the spec treats pure-integer keys (e.g. `"1"`, `"10"`) as array indices and sorts them numerically before other keys — avoid using bare numbers as script names if order matters.
 
 **Note:** Some tools (formatters, sorters) may rewrite `package.json` with scripts sorted alphabetically. If strict execution order matters, consider:
 
