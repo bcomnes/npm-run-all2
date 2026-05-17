@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
-import npmRunAll from 'npm-run-all2'
+import npmRunAll from '../lib/index.js'
 
 describe('package resolution', () => {
   test('default import is a function', () => {

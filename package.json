@@ -17,7 +17,7 @@
   },
   "types": "./lib/index.d.ts",
   "engines": {
-    "node": "^22.0.0 || ^24.0.0 || >=26.0.0",
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0",
     "npm": ">= 10"
   },
   "scripts": {
@@ -47,23 +47,23 @@
     "memorystream": "^0.3.1",
     "picomatch": "^4.0.2",
     "pidtree": "^0.6.0",
-    "read-package-json-fast": "^4.0.0",
+    "read-package-json-fast": "^6.0.0",
     "shell-quote": "^1.7.3",
-    "which": "^5.0.0"
+    "which": "^7.0.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
     "@types/memorystream": "^0.3.4",
-    "@types/node": "^22.19.19",
-    "@types/picomatch": "^3.0.2",
+    "@types/node": "^25.8.0",
+    "@types/picomatch": "^4.0.3",
     "@types/shell-quote": "^1.7.5",
     "@voxpelli/tsconfig": "^16.0.0",
     "eslint": "^9.6.0",
-    "releasearoni": "^0.1.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
     "knip": "^6.0.0",
     "neostandard": "^0.13.0",
+    "releasearoni": "^0.1.0",
     "typescript": "^6.0.3",
     "yarn": "^1.12.3"
   },
