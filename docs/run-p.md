@@ -37,6 +37,14 @@ Options:
     -r, --race   - - - - - - - Set the flag to kill all tasks when a task
                                finished with zero.
     -s, --silent   - - - - - - Set 'silent' to the log level of npm.
+    -x, --node-run   - - - - - Use `node --run` to execute scripts instead of
+                               the package manager. This is faster but has
+                               intentional limitations: no pre/post lifecycle
+                               hooks, no npm_* environment variables, and no
+                               automatic PATH injection for local binaries.
+                               Can also be enabled project-wide by setting
+                               `"npm-run-all2": { "nodeRun": true }` in
+                               package.json.
 
     Shorthand aliases can be combined.
     For example, '-clns' equals to '-c -l -n -s'.

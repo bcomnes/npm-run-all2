@@ -42,6 +42,14 @@ Options:
                                     'npm run foo && npm run bar'.
                                '--serial' is a synonym of '--sequential'.
     --silent   - - - - - - - - Set 'silent' to the log level of npm.
+    -x, --node-run   - - - - - Use `node --run` to execute scripts instead of
+                               the package manager. This is faster but has
+                               intentional limitations: no pre/post lifecycle
+                               hooks, no npm_* environment variables, and no
+                               automatic PATH injection for local binaries.
+                               Can also be enabled project-wide by setting
+                               `"npm-run-all2": { "nodeRun": true }` in
+                               package.json.
 
 Examples:
     $ npm-run-all --serial clean lint build:**

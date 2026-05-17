@@ -12,7 +12,7 @@
 const OVERWRITE_OPTION = /^--([^:]+?):([^=]+?)(?:=(.+))?$/
 const CONFIG_OPTION = /^--([^=]+?)(?:=(.+))$/
 const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/
-const CONCAT_OPTIONS = /^-[clnprs]+$/
+const CONCAT_OPTIONS = /^-[clnprsx]+$/
 
 /**
  * @typedef {Record<string, string>} ConfigMap
@@ -114,6 +114,8 @@ class ArgumentSet {
     this.silent = process.env['npm_config_loglevel'] === 'silent'
     /** @type {boolean} */
     this.singleMode = Boolean(options?.singleMode)
+    /** @type {boolean} */
+    this.nodeRun = false
 
     addGroup(this.groups, initialValues)
   }
@@ -223,6 +225,11 @@ function parseCLIArgsCore (set, args) {
 
       case '--npm-path':
         set.npmPath = args[++i] || null
+        break
+
+      case '-x':
+      case '--node-run':
+        set.nodeRun = true
         break
 
       default: {
