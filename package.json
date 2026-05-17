@@ -57,7 +57,7 @@
     "@types/shell-quote": "^1.7.5",
     "@voxpelli/tsconfig": "^16.0.0",
     "auto-changelog": "^2.2.0",
-    "eslint": "^9.6.0",
+    "eslint": "^10.4.0",
     "gh-release": "^7.0.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
