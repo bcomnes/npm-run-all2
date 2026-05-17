@@ -32,10 +32,11 @@ Options:
                                running each task.
     -s, --silent   - - - - - - Set 'silent' to the log level of npm.
     -x, --node-run   - - - - - Use `node --run` to execute scripts instead of
-                               the package manager. This is faster but has
-                               intentional limitations: no pre/post lifecycle
-                               hooks, no npm_* environment variables, and no
-                               automatic PATH injection for local binaries.
+                               the package manager. This is faster but
+                               intentionally omits: pre/post lifecycle hooks
+                               and npm_* environment variables. node_modules/.bin
+                               is still added to PATH. Sets NODE_RUN_SCRIPT_NAME
+                               and NODE_RUN_PACKAGE_JSON_PATH instead.
                                Can also be enabled project-wide by setting
                                `"npm-run-all2": { "nodeRun": true }` in
                                package.json.
