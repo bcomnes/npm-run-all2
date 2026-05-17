@@ -97,5 +97,10 @@
   "bugs": {
     "url": "https://github.com/bcomnes/npm-run-all2/issues"
   },
+  "files": [
+    "bin",
+    "lib",
+    "types"
+  ],
   "homepage": "https://github.com/bcomnes/npm-run-all2"
 }
