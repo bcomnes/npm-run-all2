@@ -10,6 +10,6 @@
 // Main
 // ------------------------------------------------------------------------------
 
-import bootstrap from '../common/bootstrap.js'
+import bootstrap from '#bin/common/bootstrap.js'
 
 bootstrap('run-p')

@@ -11,9 +11,9 @@
 
 import { test, describe, before, after } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from '../lib/index.js'
-import createHeader from '../lib/create-header.js'
-import readPackageJson from '../lib/read-package-json.js'
+import nodeApi from '#lib'
+import createHeader from '#lib/create-header.js'
+import readPackageJson from '#lib/read-package-json.js'
 import BufferStream from './lib/buffer-stream.cjs'
 import { runAll, runPar, runSeq } from './lib/util.cjs'
 

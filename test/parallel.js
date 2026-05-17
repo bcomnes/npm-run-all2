@@ -11,8 +11,8 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from '../lib/index.js'
-import NpmRunAllError from '../lib/npm-run-all-error.js'
+import nodeApi from '#lib'
+import NpmRunAllError from '#lib/npm-run-all-error.js'
 import spawnWithKill from './lib/spawn-with-kill.cjs'
 import { delay, result, removeResult, runAll, runPar } from './lib/util.cjs'
 

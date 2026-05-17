@@ -11,8 +11,8 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-import runAll from '../../lib/index.js'
-import parseCLIArgs from '../common/parse-cli-args.js'
+import runAll from '#lib'
+import parseCLIArgs from '#bin/common/parse-cli-args.js'
 
 // ------------------------------------------------------------------------------
 // Public Interface

@@ -10,6 +10,11 @@
     "npm-run-all2": "bin/npm-run-all/index.js"
   },
   "main": "./lib/index.js",
+  "imports": {
+    "#lib": "./lib/index.js",
+    "#lib/*": "./lib/*",
+    "#bin/common/*": "./bin/common/*"
+  },
   "types": "./lib/index.d.ts",
   "engines": {
     "node": "^22.0.0 || ^24.0.0 || >=26.0.0",

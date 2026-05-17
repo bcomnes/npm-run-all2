@@ -4,7 +4,7 @@
  * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  *
- * @import NpmRunAllError from '../lib/npm-run-all-error.js'
+ * @import NpmRunAllError from '#lib/npm-run-all-error.js'
  */
 
 // ------------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 
 import { test, describe, before, after, beforeEach, afterEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from '../lib/index.js'
+import nodeApi from '#lib'
 import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------

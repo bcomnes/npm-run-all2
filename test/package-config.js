@@ -12,7 +12,7 @@
 import { execSync } from 'node:child_process'
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from '../lib/index.js'
+import nodeApi from '#lib'
 import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
