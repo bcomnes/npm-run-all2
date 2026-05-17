@@ -135,6 +135,15 @@ If we use a globstar `**`, runs both sub scripts and sub-sub scripts.
 
 `npm-run-all` reads the actual npm-script list from `package.json` in the current directory, then filters the scripts by glob-like patterns, then runs those.
 
+#### Script execution order with glob patterns
+
+When using glob patterns with `--sequential` / `run-s`, matched scripts are run in the order they are defined in `package.json`. This ordering is guaranteed by the [ECMAScript specification](https://tc39.es/ecma262/#sec-ordinaryownpropertykeys), which requires that string-keyed properties are iterated in chronological order of creation (i.e., the order they appear in the file).
+
+**Note:** Some tools (formatters, sorters) may rewrite `package.json` with scripts sorted alphabetically. If strict execution order matters, consider:
+
+- Prefixing script names with numbers (e.g. `build:1:html`, `build:2:js`) so they sort correctly even after an alphabetical reorder.
+- Using explicit script names instead of glob patterns to guarantee order regardless of `package.json` layout.
+
 ### Run with arguments
 
 We can enclose a script name or a pattern in quotes to use arguments.
