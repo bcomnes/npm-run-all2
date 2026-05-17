@@ -160,15 +160,21 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     })
 
     test('npm-run-all command', async () => {
-      await runAll(['!test-task:**'])
+      const stderr = new BufferStream()
+      await runAll(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-s command', async () => {
-      await runSeq(['!test-task:**'])
+      const stderr = new BufferStream()
+      await runSeq(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-p command', async () => {
-      await runPar(['!test-task:**'])
+      const stderr = new BufferStream()
+      await runPar(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
   })
 
@@ -179,15 +185,21 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     })
 
     test('npm-run-all command', async () => {
-      await runAll(['nonexistent:*'])
+      const stderr = new BufferStream()
+      await runAll(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-s command', async () => {
-      await runSeq(['nonexistent:*'])
+      const stderr = new BufferStream()
+      await runSeq(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-p command', async () => {
-      await runPar(['nonexistent:*'])
+      const stderr = new BufferStream()
+      await runPar(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
   })
 
