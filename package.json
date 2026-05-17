@@ -33,7 +33,6 @@
     "test:check": "npm run check",
     "test:node-test": "node scripts/make-slink.js && node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000 --experimental-test-coverage",
     "watch": "node --watch --test",
-    "preversion": "releasearoni preversion",
     "version": "releasearoni version",
     "build": "npm run build:declaration",
     "build:declaration": "tsc -p declaration.tsconfig.json",
