@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -10,7 +11,7 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '#lib'
 import BufferStream from './lib/buffer-stream.cjs'
 import { result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
@@ -43,6 +44,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       await runPar(['test-task:append:*'])
       const validResults = new Set(['abab', 'abba', 'baba', 'baab'])
       const actual = result()
+      assert.ok(actual != null, 'result should not be null')
       assert.ok(validResults.has(actual), `Unexpected result: ${actual}`)
     })
   })
@@ -104,6 +106,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
       const actual = result()
       const validResults = new Set(['baba', 'baab', 'abab', 'abba'])
 
+      assert.ok(actual != null, 'result should not be null')
       assert.ok(validResults.has(actual), `Unexpected result: ${actual}`)
     })
   })
@@ -114,6 +117,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
         await nodeApi('a')
         assert.fail('should not match')
       } catch (err) {
+        assert.ok(err instanceof Error, 'err should be an Error')
         assert.match(err.message, /not found/i, `Expected error message to contain 'not found', but got: ${err.message}`)
       }
     })
@@ -121,7 +125,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('npm-run-all command', async () => {
       const stderr = new BufferStream()
       try {
-        await runAll(['a'], null, stderr)
+        await runAll(['a'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -131,7 +135,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('run-s command', async () => {
       const stderr = new BufferStream()
       try {
-        await runSeq(['a'], null, stderr)
+        await runSeq(['a'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -141,7 +145,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('run-p command', async () => {
       const stderr = new BufferStream()
       try {
-        await runPar(['a'], null, stderr)
+        await runPar(['a'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -155,6 +159,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
         await nodeApi('!test-task:**')
         assert.fail('should not match')
       } catch (err) {
+        assert.ok(err instanceof Error, 'err should be an Error')
         assert.match(err.message, /not found/i, `Expected error message to contain 'not found', but got: ${err.message}`)
       }
     })
@@ -162,7 +167,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('npm-run-all command', async () => {
       const stderr = new BufferStream()
       try {
-        await runAll(['!test-task:**'], null, stderr)
+        await runAll(['!test-task:**'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -172,7 +177,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('run-s command', async () => {
       const stderr = new BufferStream()
       try {
-        await runSeq(['!test-task:**'], null, stderr)
+        await runSeq(['!test-task:**'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -182,7 +187,7 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     test('run-p command', async () => {
       const stderr = new BufferStream()
       try {
-        await runPar(['!test-task:**'], null, stderr)
+        await runPar(['!test-task:**'], undefined, stderr)
         assert.fail('should not match')
       } catch (_err) {
         assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
@@ -193,22 +198,30 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
   describe('"!test" "?test" to "!test", "?test"', () => {
     test('Node API', async () => {
       await nodeApi(['!test', '?test'])
-      assert.strictEqual(result().trim(), 'XQ')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'XQ')
     })
 
     test('npm-run-all command', async () => {
       await runAll(['!test', '?test'])
-      assert.strictEqual(result().trim(), 'XQ')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'XQ')
     })
 
     test('run-s command', async () => {
       await runSeq(['!test', '?test'])
-      assert.strictEqual(result().trim(), 'XQ')
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      assert.strictEqual(r.trim(), 'XQ')
     })
 
     test('run-p command', async () => {
       await runPar(['!test', '?test'])
-      const actual = result().trim()
+      const r = result()
+      assert.ok(r != null, 'result should not be null')
+      const actual = r.trim()
       assert.ok(actual === 'XQ' || actual === 'QX', `Expected result to be 'XQ' or 'QX', but got: ${actual}`)
     })
   })

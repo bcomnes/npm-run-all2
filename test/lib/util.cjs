@@ -1,7 +1,10 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
+ *
+ * @import { Writable } from 'node:stream'
  */
 'use strict'
 
@@ -76,7 +79,7 @@ function result () {
   try {
     return fs.readFileSync(FILE_NAME, { encoding: 'utf8' })
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err instanceof Error && /** @type {NodeJS.ErrnoException} */ (err).code === 'ENOENT') {
       return null
     }
     throw err
@@ -102,7 +105,7 @@ function removeResult () {
   try {
     fs.unlinkSync(FILE_NAME)
   } catch (err) {
-    if (err.code === 'ENOENT') {
+    if (err instanceof Error && /** @type {NodeJS.ErrnoException} */ (err).code === 'ENOENT') {
       return
     }
     throw err

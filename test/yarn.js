@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -29,6 +30,10 @@ function exec (command, args) {
     const stderr = new BufferStream()
     const cp = spawn(command, args, { stdio: ['ignore', 'ignore', 'pipe'] })
 
+    if (cp.stderr == null) {
+      reject(new Error('cp.stderr is null'))
+      return
+    }
     cp.stderr.pipe(stderr)
     cp.on('exit', (exitCode) => {
       if (exitCode) {

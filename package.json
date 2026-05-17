@@ -9,32 +9,35 @@
     "npm-run-all": "bin/npm-run-all/index.js",
     "npm-run-all2": "bin/npm-run-all/index.js"
   },
-  "main": "lib/cjs.cjs",
-  "exports": {
-    ".": {
-      "import": "./lib/esm.mjs",
-      "require": "./lib/cjs.cjs"
-    },
-    "./*": "./*"
+  "main": "./lib/index.js",
+  "imports": {
+    "#lib": "./lib/index.js",
+    "#lib/*": "./lib/*",
+    "#bin/common/*": "./bin/common/*"
   },
+  "types": "./lib/index.d.ts",
   "engines": {
-    "node": "^20.5.0 || >=22.0.0",
+    "node": "^22.0.0 || ^24.0.0 || >=26.0.0",
     "npm": ">= 10"
   },
   "scripts": {
-    "clean": "rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
+    "clean": "npm run clean:declarations-lib && rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
     "check:installed-check": "installed-check --ignore-dev",
     "check:eslint": "eslint",
     "check:knip": "knip",
+    "check:tsc": "tsc",
     "precheck": "node scripts/make-slink.js",
     "check": "node ./bin/run-p/index.js check:*",
     "test": "node ./bin/run-s/index.js test:*",
     "test:check": "npm run check",
-    "test:node-test": "node scripts/make-slink.js && c8 node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000",
+    "test:node-test": "node scripts/make-slink.js && node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000 --experimental-test-coverage",
     "watch": "node --watch --test",
     "version": "auto-changelog -p --template keepachangelog auto-changelog --breaking-pattern 'BREAKING CHANGE:' && git add CHANGELOG.md",
-    "prepublishOnly": "git push --follow-tags && gh-release -y"
+    "build": "npm run build:declaration",
+    "build:declaration": "tsc -p declaration.tsconfig.json",
+    "clean:declarations-lib": "find lib -type f -name '*.d.*' -delete",
+    "prepublishOnly": "npm run build && git push --follow-tags && gh-release -y"
   },
   "dependencies": {
     "ansi-styles": "^6.2.1",
@@ -47,14 +50,20 @@
     "which": "^5.0.0"
   },
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/memorystream": "^0.3.4",
+    "@types/node": "^22.19.19",
+    "@types/picomatch": "^3.0.2",
+    "@types/shell-quote": "^1.7.5",
+    "@voxpelli/tsconfig": "^16.0.0",
     "auto-changelog": "^2.2.0",
-    "c8": "^11.0.0",
     "eslint": "^9.6.0",
     "gh-release": "^7.0.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
     "knip": "^6.0.0",
     "neostandard": "^0.13.0",
+    "typescript": "^6.0.3",
     "yarn": "^1.12.3"
   },
   "repository": {
@@ -74,20 +83,19 @@
     "parallel",
     "task"
   ],
-  "author": "Toru Nagashima",
+  "author": {
+    "name": "Toru Nagashima"
+  },
   "contributors": [
-    "Bret Comnes <bcomnes@gmail.com> (https://bret.io)"
+    {
+      "name": "Bret Comnes",
+      "email": "bcomnes@gmail.com",
+      "url": "https://bret.io"
+    }
   ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bcomnes/npm-run-all2/issues"
   },
-  "homepage": "https://github.com/bcomnes/npm-run-all2",
-  "c8": {
-    "reporter": [
-      "html",
-      "lcovonly",
-      "text"
-    ]
-  }
+  "homepage": "https://github.com/bcomnes/npm-run-all2"
 }

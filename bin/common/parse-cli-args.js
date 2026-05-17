@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -14,9 +15,20 @@ const PACKAGE_CONFIG_PATTERN = /^npm_package_config_(.+)$/
 const CONCAT_OPTIONS = /^-[clnprs]+$/
 
 /**
+ * @typedef {Record<string, string>} ConfigMap
+ * @typedef {Record<string, ConfigMap>} PackageConfigMap
+ * @typedef CliGroup
+ * @property {boolean} parallel - Whether this group runs in parallel.
+ * @property {string[]} patterns - Task patterns in this group.
+ * @typedef {Partial<CliGroup>} InitialValues
+ * @typedef ArgumentSetOptions
+ * @property {boolean} [singleMode] - The flag to be single group mode.
+ */
+
+/**
  * Overwrites a specified package config.
  *
- * @param {object} config - A config object to be overwritten.
+ * @param {PackageConfigMap} config - A config object to be overwritten.
  * @param {string} packageName - A package name to overwrite.
  * @param {string} variable - A variable name to overwrite.
  * @param {string} value - A new value to overwrite.
@@ -31,18 +43,19 @@ function overwriteConfig (config, packageName, variable, value) {
  * Creates a package config object.
  * This checks `process.env` and creates the default value.
  *
- * @returns {object} Created config object.
+ * @returns {PackageConfigMap} Created config object.
  */
 function createPackageConfig () {
+  /** @type {PackageConfigMap} */
   const retv = {}
-  const packageName = process.env.npm_package_name
+  const packageName = process.env['npm_package_name']
   if (!packageName) {
     return retv
   }
 
   for (const key of Object.keys(process.env)) {
     const m = PACKAGE_CONFIG_PATTERN.exec(key)
-    if (m != null) {
+    if (m != null && m[1] && process.env[key] != null) {
       overwriteConfig(retv, packageName, m[1], process.env[key])
     }
   }
@@ -53,8 +66,8 @@ function createPackageConfig () {
 /**
  * Adds a new group into a given list.
  *
- * @param {object[]} groups - A group list to add.
- * @param {object} initialValues - A key-value map for the default of new value.
+ * @param {CliGroup[]} groups - A group list to add.
+ * @param {InitialValues} [initialValues] - A key-value map for the default of new value.
  * @returns {void}
  */
 function addGroup (groups, initialValues) {
@@ -71,22 +84,36 @@ function addGroup (groups, initialValues) {
  */
 class ArgumentSet {
   /**
-     * @param {object} initialValues - A key-value map for the default of new value.
-     * @param {object} options - A key-value map for the options.
+     * @param {InitialValues} [initialValues] - A key-value map for the default of new value.
+     * @param {ArgumentSetOptions} [options] - A key-value map for the options.
      */
   constructor (initialValues, options) {
+    /** @type {ConfigMap} */
     this.config = {}
+    /** @type {boolean} */
     this.continueOnError = false
+    /** @type {CliGroup[]} */
     this.groups = []
+    /** @type {number} */
     this.maxParallel = 0
+    /** @type {string | null} */
     this.npmPath = null
+    /** @type {PackageConfigMap} */
     this.packageConfig = createPackageConfig()
+    /** @type {boolean} */
     this.printLabel = false
+    /** @type {boolean} */
     this.printName = false
+    /** @type {boolean} */
     this.race = false
+    /** @type {boolean} */
+    this.aggregateOutput = false
+    /** @type {string[]} */
     this.rest = []
-    this.silent = process.env.npm_config_loglevel === 'silent'
-    this.singleMode = Boolean(options && options.singleMode)
+    /** @type {boolean} */
+    this.silent = process.env['npm_config_loglevel'] === 'silent'
+    /** @type {boolean} */
+    this.singleMode = Boolean(options?.singleMode)
 
     addGroup(this.groups, initialValues)
   }
@@ -95,7 +122,11 @@ class ArgumentSet {
      * Gets the last group.
      */
   get lastGroup () {
-    return this.groups[this.groups.length - 1]
+    const group = this.groups[this.groups.length - 1]
+    if (!group) {
+      throw new Error('No argument group exists.')
+    }
+    return group
   }
 
   /**
@@ -117,6 +148,9 @@ function parseCLIArgsCore (set, args) {
   LOOP: // eslint-disable-line no-labels
   for (let i = 0; i < args.length; ++i) {
     const arg = args[i]
+    if (arg == null) {
+      continue
+    }
 
     switch (arg) {
       case '--':
@@ -153,9 +187,12 @@ function parseCLIArgsCore (set, args) {
         break
 
       case '--max-parallel':
-        set.maxParallel = parseInt(args[++i], 10)
-        if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
-          throw new Error(`Invalid Option: --max-parallel ${args[i]}`)
+        {
+          const rawMaxParallel = args[++i]
+          set.maxParallel = parseInt(rawMaxParallel ?? '', 10)
+          if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
+            throw new Error(`Invalid Option: --max-parallel ${rawMaxParallel ?? ''}`)
+          }
         }
         break
 
@@ -193,12 +230,15 @@ function parseCLIArgsCore (set, args) {
         if ((matched = OVERWRITE_OPTION.exec(arg))) {
           overwriteConfig(
             set.packageConfig,
-            matched[1],
-            matched[2],
-            matched[3] || args[++i]
+            matched[1] ?? '',
+            matched[2] ?? '',
+            matched[3] ?? args[++i] ?? ''
           )
         } else if ((matched = CONFIG_OPTION.exec(arg))) {
-          set.config[matched[1]] = matched[2]
+          const configName = matched[1]
+          if (configName) {
+            set.config[configName] = matched[2] ?? ''
+          }
         } else if (CONCAT_OPTIONS.test(arg)) {
           parseCLIArgsCore(
             set,
@@ -233,9 +273,8 @@ function parseCLIArgsCore (set, args) {
  * Parses CLI arguments.
  *
  * @param {string[]} args - CLI arguments.
- * @param {object} initialValues - A key-value map for the default of new value.
- * @param {object} options - A key-value map for the options.
- * @param {boolean} options.singleMode - The flag to be single group mode.
+ * @param {InitialValues} [initialValues] - A key-value map for the default of new value.
+ * @param {ArgumentSetOptions} [options] - A key-value map for the options.
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
 export default function parseCLIArgs (args, initialValues, options) {

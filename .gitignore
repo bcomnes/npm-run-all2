@@ -6,3 +6,7 @@
 /test.js
 npm-debug.log
 package-lock.json
+lib/*.d.ts
+lib/*.d.ts.map
+lib/*.d.mts
+lib/*.d.mts.map

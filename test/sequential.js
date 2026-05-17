@@ -1,6 +1,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2016 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -10,7 +11,8 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import nodeApi from 'npm-run-all2'
+import nodeApi from '#lib'
+import NpmRunAllError from '#lib/npm-run-all-error.js'
 import spawnWithKill from './lib/spawn-with-kill.cjs'
 import { delay, result, removeResult, runAll, runSeq } from './lib/util.cjs'
 
@@ -27,9 +29,12 @@ describe('[sequential] npm-run-all', () => {
   describe('should run tasks sequentially:', () => {
     test('Node API', async () => {
       const results = await nodeApi(['test-task:append a', 'test-task:append b'], { parallel: false })
+      assert.ok(results != null, 'results should not be null')
       assert.strictEqual(results.length, 2)
+      assert.ok(results[0] != null, 'results[0] should exist')
       assert.strictEqual(results[0].name, 'test-task:append a')
       assert.strictEqual(results[0].code, 0)
+      assert.ok(results[1] != null, 'results[1] should exist')
       assert.strictEqual(results[1].name, 'test-task:append b')
       assert.strictEqual(results[1].code, 0)
       assert.strictEqual(result(), 'aabb')
@@ -51,11 +56,15 @@ describe('[sequential] npm-run-all', () => {
       try {
         await nodeApi(['test-task:append2 a', 'test-task:error', 'test-task:append2 b'])
       } catch (err) {
+        assert.ok(err instanceof NpmRunAllError, 'err should be NpmRunAllError')
         assert.strictEqual(err.results.length, 3)
+        assert.ok(err.results[0] != null, 'results[0] should exist')
         assert.strictEqual(err.results[0].name, 'test-task:append2 a')
         assert.strictEqual(err.results[0].code, 0)
+        assert.ok(err.results[1] != null, 'results[1] should exist')
         assert.strictEqual(err.results[1].name, 'test-task:error')
         assert.strictEqual(err.results[1].code, 1)
+        assert.ok(err.results[2] != null, 'results[2] should exist')
         assert.strictEqual(err.results[2].name, 'test-task:append2 b')
         assert.strictEqual(err.results[2].code, undefined)
         assert.strictEqual(result(), 'aa')

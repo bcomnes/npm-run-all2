@@ -2,6 +2,7 @@
 /**
  * @author Toru Nagashima
  * @copyright 2015 Toru Nagashima. All rights reserved.
+ * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
  */
 
@@ -9,6 +10,6 @@
 // Main
 // ------------------------------------------------------------------------------
 
-import bootstrap from '../common/bootstrap.js'
+import bootstrap from '#bin/common/bootstrap.js'
 
 bootstrap('npm-run-all')
