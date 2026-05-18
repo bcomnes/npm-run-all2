@@ -52,6 +52,7 @@ export default function npmRunAll (args, stdout, stderr) {
         silent: argv.silent,
         arguments: argv.rest,
         npmPath: argv.npmPath,
+        nodeRun: argv.nodeRun,
       }
     )
 

@@ -55,6 +55,7 @@ export default function npmRunAll (args, stdout, stderr) {
         race: argv.race,
         npmPath: argv.npmPath,
         aggregateOutput: argv.aggregateOutput,
+        nodeRun: argv.nodeRun,
       }
     )
 
