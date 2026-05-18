@@ -39,6 +39,10 @@ Run npm-scripts.
     The flag to avoid interleaving output by delaying printing of each command's output until it has finished.
     This option is valid only with `options.parallel` option.
     Default is `false`.
+  - **options.colorMode** `"auto"|"none"|"16"|"256"` --
+    Override the color palette used for task labels when `options.printLabel` is `true`.
+    `"auto"` detects the palette from the stream's color depth; `"none"` disables colors; `"16"` forces the named 16-color palette; `"256"` forces the ANSI 256-color palette.
+    Default is `"auto"`.
   - **options.arguments** `string[]` --
     An argument list to replace argument placeholders (such as `{1}`, `{2}`). If pattern text has `{1}`, it's replaced by `options.arguments[0]`.
     Default is an empty array.

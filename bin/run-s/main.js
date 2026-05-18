@@ -53,6 +53,7 @@ export default function npmRunAll (args, stdout, stderr) {
         arguments: argv.rest,
         npmPath: argv.npmPath,
         nodeRun: argv.nodeRun,
+        colorMode: argv.colorMode,
       }
     )
 

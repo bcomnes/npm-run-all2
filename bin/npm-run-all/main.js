@@ -56,6 +56,7 @@ export default function npmRunAll (args, stdout, stderr) {
             npmPath: argv.npmPath,
             aggregateOutput: group.parallel && argv.aggregateOutput,
             nodeRun: argv.nodeRun,
+            colorMode: argv.colorMode,
           }
         ))
       },
