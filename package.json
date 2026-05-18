@@ -57,7 +57,7 @@
     "@types/picomatch": "^4.0.3",
     "@types/shell-quote": "^1.7.5",
     "@voxpelli/tsconfig": "^16.0.0",
-    "eslint": "^9.6.0",
+    "eslint": "^10.4.0",
     "installed-check": "^10.0.1",
     "jsdoc": "^4.0.0",
     "knip": "^6.0.0",
