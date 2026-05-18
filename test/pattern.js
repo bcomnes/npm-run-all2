@@ -153,45 +153,53 @@ describe('[pattern] it should run matched tasks if glob like patterns are given.
     })
   })
 
-  describe('"!test-task:**" should not match to anything', () => {
+  describe('"!test-task:**" is a glob that matches nothing, so it should succeed silently', () => {
     test('Node API', async () => {
-      try {
-        await nodeApi('!test-task:**')
-        assert.fail('should not match')
-      } catch (err) {
-        assert.ok(err instanceof Error, 'err should be an Error')
-        assert.match(err.message, /not found/i, `Expected error message to contain 'not found', but got: ${err.message}`)
-      }
+      const result = await nodeApi('!test-task:**')
+      assert.deepStrictEqual(result, [])
     })
 
     test('npm-run-all command', async () => {
       const stderr = new BufferStream()
-      try {
-        await runAll(['!test-task:**'], undefined, stderr)
-        assert.fail('should not match')
-      } catch (_err) {
-        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
-      }
+      await runAll(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-s command', async () => {
       const stderr = new BufferStream()
-      try {
-        await runSeq(['!test-task:**'], undefined, stderr)
-        assert.fail('should not match')
-      } catch (_err) {
-        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
-      }
+      await runSeq(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
 
     test('run-p command', async () => {
       const stderr = new BufferStream()
-      try {
-        await runPar(['!test-task:**'], undefined, stderr)
-        assert.fail('should not match')
-      } catch (_err) {
-        assert.match(stderr.value, /not found/i, `Expected stderr to contain 'not found', but got: ${stderr.value}`)
-      }
+      await runPar(['!test-task:**'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
+    })
+  })
+
+  describe('"nonexistent:*" is a glob that matches nothing, so it should succeed silently', () => {
+    test('Node API', async () => {
+      const result = await nodeApi('nonexistent:*')
+      assert.deepStrictEqual(result, [])
+    })
+
+    test('npm-run-all command', async () => {
+      const stderr = new BufferStream()
+      await runAll(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
+    })
+
+    test('run-s command', async () => {
+      const stderr = new BufferStream()
+      await runSeq(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
+    })
+
+    test('run-p command', async () => {
+      const stderr = new BufferStream()
+      await runPar(['nonexistent:*'], undefined, stderr)
+      assert.strictEqual(stderr.value, '')
     })
   })
 
