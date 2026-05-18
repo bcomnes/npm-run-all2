@@ -3,6 +3,8 @@
  * @copyright 2016 Toru Nagashima. All rights reserved.
  * @copyright 2026 Bret Comnes. All rights reserved.
  * See LICENSE file in root directory for full license.
+ *
+ * @import { ColorMode } from '../../lib/run-task.js'
  */
 
 // ------------------------------------------------------------------------------
@@ -108,6 +110,8 @@ class ArgumentSet {
     this.race = false
     /** @type {boolean} */
     this.aggregateOutput = false
+    /** @type {ColorMode} */
+    this.colorMode = 'auto'
     /** @type {string[]} */
     this.rest = []
     /** @type {boolean} */
@@ -231,6 +235,15 @@ function parseCLIArgsCore (set, args) {
       case '--node-run':
         set.nodeRun = true
         break
+
+      case '--color-mode': {
+        const mode = args[++i]
+        if (mode !== 'auto' && mode !== 'none' && mode !== '16' && mode !== '256') {
+          throw new Error(`Invalid Option: --color-mode ${mode ?? ''} (expected auto, none, 16, or 256)`)
+        }
+        set.colorMode = mode
+        break
+      }
 
       default: {
         let matched = null

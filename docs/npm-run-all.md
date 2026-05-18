@@ -15,6 +15,12 @@ Usage:
 Options:
     --aggregate-output   - - - Avoid interleaving output by delaying printing of
                                each command's output until it has finished.
+    --color-mode <mode>  - - - Override the color palette used for task labels
+                               when --print-label is active.
+                               auto (default): detect from terminal capabilities.
+                               none: disable label colors.
+                               16: force 16-color named palette.
+                               256: force 256-color palette.
     -c, --continue-on-error  - Set the flag to continue executing
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with
