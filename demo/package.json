@@ -1,0 +1,40 @@
+{
+  "name": "color-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Interactive demo of run-p colored labels (PR #222)",
+  "scripts": {
+    "alpha":    "node -e \"let i=0; setInterval(() => console.log('alpha line '    + ++i), 700)\"",
+    "beta":     "node -e \"let i=0; setInterval(() => console.log('beta line '     + ++i), 900)\"",
+    "gamma":    "node -e \"let i=0; setInterval(() => console.log('gamma line '    + ++i), 600)\"",
+    "delta":    "node -e \"let i=0; setInterval(() => console.log('delta line '    + ++i), 1100)\"",
+    "epsilon":  "node -e \"let i=0; setInterval(() => console.log('epsilon line '  + ++i), 800)\"",
+    "zeta":     "node -e \"let i=0; setInterval(() => console.log('zeta line '     + ++i), 500)\"",
+    "eta":      "node -e \"let i=0; setInterval(() => console.log('eta line '      + ++i), 750)\"",
+    "theta":    "node -e \"let i=0; setInterval(() => console.log('theta line '    + ++i), 850)\"",
+    "iota":     "node -e \"let i=0; setInterval(() => console.log('iota line '     + ++i), 650)\"",
+    "kappa":    "node -e \"let i=0; setInterval(() => console.log('kappa line '    + ++i), 950)\"",
+    "lambda":   "node -e \"let i=0; setInterval(() => console.log('lambda line '   + ++i), 550)\"",
+    "mu":       "node -e \"let i=0; setInterval(() => console.log('mu line '       + ++i), 1050)\"",
+    "nu":       "node -e \"let i=0; setInterval(() => console.log('nu line '       + ++i), 725)\"",
+    "xi":       "node -e \"let i=0; setInterval(() => console.log('xi line '       + ++i), 875)\"",
+    "omicron":  "node -e \"let i=0; setInterval(() => console.log('omicron line '  + ++i), 625)\"",
+    "pi":       "node -e \"let i=0; setInterval(() => console.log('pi line '       + ++i), 925)\"",
+    "rho":      "node -e \"let i=0; setInterval(() => console.log('rho line '      + ++i), 575)\"",
+    "sigma":    "node -e \"let i=0; setInterval(() => console.log('sigma line '    + ++i), 1025)\"",
+    "tau":      "node -e \"let i=0; setInterval(() => console.log('tau line '      + ++i), 775)\"",
+    "upsilon":  "node -e \"let i=0; setInterval(() => console.log('upsilon line '  + ++i), 675)\"",
+
+    "all-tasks": "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+
+    "demo":            "node ../bin/run-p/index.js -l alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-16":         "node ../bin/run-p/index.js -l --color-mode 16   alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-256":        "node ../bin/run-p/index.js -l --color-mode 256  alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-none":       "node ../bin/run-p/index.js -l --color-mode none alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-force-none": "FORCE_COLOR=0 node ../bin/run-p/index.js -l alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-force-16":   "FORCE_COLOR=1 node ../bin/run-p/index.js -l alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-force-256":  "FORCE_COLOR=2 node ../bin/run-p/index.js -l alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon",
+    "demo-force-16m":  "FORCE_COLOR=3 node ../bin/run-p/index.js -l alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma tau upsilon"
+  }
+}
