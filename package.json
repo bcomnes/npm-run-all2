@@ -62,7 +62,7 @@
     "jsdoc": "^4.0.0",
     "knip": "^6.0.0",
     "neostandard": "^0.13.0",
-    "releasearoni": "^0.1.0",
+    "releasearoni": "^0.2.0",
     "typescript": "^6.0.3",
     "yarn": "^1.12.3"
   },
