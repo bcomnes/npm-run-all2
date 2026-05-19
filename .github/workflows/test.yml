@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version-file: package.json
-      - run: npm i
+      - run: npm i --ignore-scripts
       - run: npm run check
 
   test:
@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
-      - run: npm i
+      - run: npm i --ignore-scripts
       - run: npm run test:node-test
       - uses: codecov/codecov-action@v6
         if: ${{ github.event_name == 'pull_request' }}
