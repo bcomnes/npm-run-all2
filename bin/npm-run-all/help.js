@@ -65,7 +65,7 @@ Options:
                                is still added to PATH. Sets NODE_RUN_SCRIPT_NAME
                                and NODE_RUN_PACKAGE_JSON_PATH instead.
                                Can also be enabled project-wide by setting
-                               `"npm-run-all2": { "nodeRun": true }` in
+                               \`"npm-run-all2": { "nodeRun": true }\` in
                                package.json.
 
 Examples:
