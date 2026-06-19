@@ -53,7 +53,7 @@
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
     "@types/memorystream": "^0.3.4",
-    "@types/node": "^25.8.0",
+    "@types/node": "^26.0.0",
     "@types/picomatch": "^4.0.3",
     "@types/shell-quote": "^1.7.5",
     "@voxpelli/tsconfig": "^16.0.0",
