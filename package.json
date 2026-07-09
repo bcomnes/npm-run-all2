@@ -63,7 +63,7 @@
     "knip": "^6.0.0",
     "neostandard": "^0.13.0",
     "releasearoni": "^0.2.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "yarn": "^1.12.3"
   },
   "repository": {
