@@ -41,7 +41,7 @@
     "postpublish": "npm run clean"
   },
   "dependencies": {
-    "ansi-styles": "^6.2.1",
+    "ansi-styles": "^7.0.0",
     "cross-spawn": "^7.0.6",
     "memorystream": "^0.3.1",
     "picomatch": "^4.0.2",
