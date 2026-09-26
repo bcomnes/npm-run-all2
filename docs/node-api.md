@@ -43,6 +43,9 @@ Run npm-scripts.
     Override the color palette used for task labels when `options.printLabel` is `true`.
     `"auto"` detects the palette from the stream's color depth; `"none"` disables colors; `"16"` forces the named 16-color palette; `"256"` forces the ANSI 256-color palette.
     Default is `"auto"`.
+  - **options.config** `object|null` --
+    The map-like object of npm config values passed as `--key=value`.
+    Default is `null`.
   - **options.arguments** `string[]` --
     An argument list to replace argument placeholders (such as `{1}`, `{2}`). If pattern text has `{1}`, it's replaced by `options.arguments[0]`.
     Default is an empty array.
@@ -60,6 +63,10 @@ Run npm-scripts.
   - **options.npmPath** `string` --
     The path to npm.
     Default is `process.env.npm_execpath` or `"npm"`.
+  - **options.nodeRun** `boolean` --
+    Use `node --run` instead of the package manager to execute scripts.
+    This omits pre/post lifecycle hooks and `npm_*` environment variables.
+    Default is `false`, unless `"npm-run-all2": { "nodeRun": true }` is set in `package.json`.
   - **options.packageConfig** `object|null` --
     The map-like object to overwrite package configs.
     Keys are package names.
@@ -97,10 +104,10 @@ Run npm-scripts.
     If this is `null`, it reads from `package.json` in the current directory.
     Default is `null`.
 
-`runAll` returns a promise that will becomes *fulfilled* when all scripts are completed.
-The promise will become *rejected* when any of the scripts exit with a non-zero code.
+`runAll` returns a promise that resolves to `null` when no patterns are supplied (for example, `runAll([])`).
+Otherwise, it resolves when all scripts are completed and rejects if any script exits with a non-zero code.
 
-The promise gives `results` to the fulfilled handler.
+When patterns are supplied, the promise gives `results` to the fulfilled handler.
 `results` is an array of objects which have 2 properties: `name` and `code`.
 The `name` property is the name of a npm-script.
 The `code` property is the exit code of the npm-script. If the npm-script was not executed, the `code` property is `undefined`.
