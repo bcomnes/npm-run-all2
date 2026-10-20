@@ -205,7 +205,7 @@ There are the following placeholders:
 
 Support for following suffixes:
 
-- `{1-=foo}` -- defaults to `'foo'` here when the 1st argument is missing
+- `{1:-foo}` -- defaults to `'foo'` here when the 1st argument is missing
 - `{1:=foo}` -- defaults to `'foo'` here and in all following `{1}` when the 1st argument is missing
 
 Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters). But please note arguments are enclosed by double quotes automatically (similar to npm).
