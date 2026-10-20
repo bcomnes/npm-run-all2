@@ -222,6 +222,39 @@ describe('[argument-placeholders]', () => {
     })
   })
 
+  describe('Placeholder scanning should handle malformed and nested input:', () => {
+    for (const [name, suffix] of [
+      ['repeated unpack prefixes', '{{%|'.repeat(25000)],
+      ['unterminated numeric placeholder', '{1' + '00'.repeat(50000)],
+      ['unterminated unpack placeholder', '{{%' + '00'.repeat(50000)],
+    ]) {
+      test(name, async () => {
+        const tasks = await nodeApi(`missing:* {@} ${suffix}`, { taskList: [] })
+        assert.deepEqual(tasks, [])
+        strictEqual(result(), null)
+      })
+    }
+
+    test('opening braces in default values', async () => {
+      await nodeApi('test-task:dump {1:-a{b} {2:=c{d} {2}')
+      strictEqual(result(), '["a{b","c{d","c{d"]')
+    })
+
+    test('valid placeholders after unmatched opening braces', async () => {
+      await nodeApi('test-task:dump {{1} {{%}', { arguments: ['value'] })
+      strictEqual(result(), '["{value","{value"]')
+    })
+
+    test('multiple unpack placeholders in one command', async () => {
+      await nodeApi('test-task:dump {%} {%}', { arguments: ['1st', '2nd'] })
+      strictEqual(result(), '["1st","1st"]["2nd","2nd"]')
+    })
+
+    test('invalid unpack options remain rejected', async () => {
+      await assert.rejects(nodeApi('test-task:dump {%:-foo}', { arguments: ['value'] }), /Invalid Placeholder/)
+    })
+  })
+
   describe("Every '{1}', '{2}', '{@}' and '{*}' should be replaced by the arguments preceded by '--':", () => {
     test('Node API', async () => {
       await nodeApi('test-task:dump {1} {2} {3} {@} {*}', { arguments: ['1st', '2nd'] })
