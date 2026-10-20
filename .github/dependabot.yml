@@ -12,6 +12,12 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 1
+    groups:
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/node"
+          - "@voxpelli/tsconfig"
   # Enable updates to github actions
   - package-ecosystem: "github-actions"
     directory: "/"
