@@ -1,0 +1,7 @@
+version = 1
+name = "npm-run-all2"
+
+[setup]
+script = '''
+sh .codex/setup-worktree.sh
+'''
