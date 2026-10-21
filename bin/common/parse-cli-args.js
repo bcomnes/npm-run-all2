@@ -118,8 +118,8 @@ class ArgumentSet {
     this.silent = process.env['npm_config_loglevel'] === 'silent'
     /** @type {boolean} */
     this.singleMode = Boolean(options?.singleMode)
-    /** @type {boolean} */
-    this.nodeRun = false
+    /** @type {boolean | undefined} */
+    this.nodeRun = undefined
 
     addGroup(this.groups, initialValues)
   }
