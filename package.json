@@ -55,6 +55,7 @@
     "@types/memorystream": "^0.3.4",
     "@types/node": "^26.0.0",
     "@types/picomatch": "^4.0.3",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@voxpelli/tsconfig": "^17.0.0",
     "eslint": "^9.6.0",
     "installed-check": "^11.0.0",
@@ -62,9 +63,10 @@
     "knip": "^6.0.0",
     "neostandard": "^0.14.1",
     "releasearoni": "^0.2.0",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "yarn": "^1.12.3"
   },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/bcomnes/npm-run-all2.git"
