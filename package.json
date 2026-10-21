@@ -1,7 +1,7 @@
 {
   "name": "npm-run-all2",
   "type": "module",
-  "version": "9.0.3",
+  "version": "9.0.4",
   "description": "A CLI tool to run multiple npm-scripts in parallel or sequential. (Maintenance fork)",
   "bin": {
     "run-p": "bin/run-p/index.js",
@@ -66,7 +66,6 @@
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "yarn": "^1.12.3"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/bcomnes/npm-run-all2.git"
