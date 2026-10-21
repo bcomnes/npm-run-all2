@@ -45,7 +45,7 @@ Run npm-scripts.
     Default is `"auto"`.
   - **options.config** `object|null` --
     The map-like object of npm config values passed to the package manager as `--key=value`.
-    This option has no effect when `options.nodeRun` is `true`.
+    This option has no effect when scripts are executed with `node --run`.
     Default is `null`.
   - **options.arguments** `string[]` --
     An argument list to replace argument placeholders (such as `{1}`, `{2}`). If pattern text has `{1}`, it's replaced by `options.arguments[0]`.
@@ -67,8 +67,9 @@ Run npm-scripts.
   - **options.nodeRun** `boolean` --
     Use `node --run` instead of the package manager to execute scripts.
     This does not run pre/post lifecycle hooks or populate npm-specific environment variables; existing environment variables are inherited.
-    Default is `false`.
-    The `package.json` setting `"npm-run-all2": { "nodeRun": true }` applies only to CLI commands and does not affect the Node API.
+    Default is `false`, unless `"npm-run-all2": { "nodeRun": true }` is set in `package.json`.
+    Passing `false` does not override an enabled package setting.
+    The package setting is read only when `options.taskList` is omitted or `null`.
   - **options.packageConfig** `object|null` --
     The map-like object to overwrite package configs.
     Keys are package names.

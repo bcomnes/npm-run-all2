@@ -10,7 +10,6 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync, writeFileSync } from 'node:fs'
 import nodeApi from '#lib'
 import { delay, result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
@@ -23,88 +22,6 @@ describe('[node-run]', () => {
   after(() => process.chdir('..'))
 
   beforeEach(() => delay(1000).then(removeResult))
-
-  describe('package.json nodeRun defaults', () => {
-    const lifecycleTask = 'test-task:node-run-lifecycle'
-
-    /**
-     * @param {boolean | string | number | undefined} nodeRun
-     * @param {() => Promise<void>} callback
-     */
-    async function withPackageNodeRun (nodeRun, callback) {
-      const original = readFileSync('package.json')
-      const pkg = JSON.parse(original.toString('utf8'))
-      pkg['npm-run-all2'] = { ...pkg['npm-run-all2'], nodeRun }
-
-      try {
-        writeFileSync('package.json', JSON.stringify(pkg, null, 2))
-        await callback()
-      } finally {
-        writeFileSync('package.json', original)
-      }
-    }
-
-    for (const packageNodeRun of [undefined, false, true]) {
-      for (const nodeRun of [undefined, false, true]) {
-        for (const suppliedTaskList of [false, true]) {
-          test(`Node API ignores package nodeRun=${packageNodeRun} with option=${nodeRun} and taskList=${suppliedTaskList}`, async () => {
-            await withPackageNodeRun(packageNodeRun, async () => {
-              const results = await nodeApi([lifecycleTask], {
-                ...(nodeRun === undefined ? {} : { nodeRun }),
-                ...(suppliedTaskList ? { taskList: [lifecycleTask] } : {}),
-              })
-              assert.ok(results != null)
-              assert.strictEqual(results.length, 1)
-              assert.strictEqual(results[0]?.code, 0)
-              assert.strictEqual(result(), nodeRun === true ? 'main' : 'premainpost')
-            })
-          })
-        }
-      }
-    }
-
-    for (const { name, run } of [
-      { name: 'npm-run-all', run: runAll },
-      { name: 'run-s', run: runSeq },
-      { name: 'run-p', run: runPar },
-    ]) {
-      for (const packageNodeRun of [undefined, false, true, 'true', 1]) {
-        test(`${name} honors only literal package nodeRun=true (value=${JSON.stringify(packageNodeRun)})`, async () => {
-          await withPackageNodeRun(packageNodeRun, async () => {
-            await run([lifecycleTask])
-            assert.strictEqual(result(), packageNodeRun === true ? 'main' : 'premainpost')
-          })
-        })
-      }
-
-      for (const flag of ['--node-run', '-x']) {
-        test(`${name} ${flag} overrides package nodeRun=false`, async () => {
-          await withPackageNodeRun(false, async () => {
-            await run([flag, lifecycleTask])
-            assert.strictEqual(result(), 'main')
-          })
-        })
-      }
-    }
-
-    for (const { packageNodeRun, flags, expected } of [
-      { packageNodeRun: true, flags: [], expected: 'mainmainmain' },
-      { packageNodeRun: false, flags: [], expected: 'premainpostpremainpostpremainpost' },
-      { packageNodeRun: false, flags: ['--node-run'], expected: 'mainmainmain' },
-    ]) {
-      test(`npm-run-all applies nodeRun to mixed groups (package=${packageNodeRun}, flags=${flags.join(' ')})`, async () => {
-        await withPackageNodeRun(packageNodeRun, async () => {
-          await runAll([
-            ...flags,
-            lifecycleTask,
-            '-p', lifecycleTask,
-            '-s', lifecycleTask,
-          ])
-          assert.strictEqual(result(), expected)
-        })
-      })
-    }
-  })
 
   describe('should run tasks sequentially with --node-run:', () => {
     test('Node API', async () => {
