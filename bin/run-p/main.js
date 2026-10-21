@@ -11,7 +11,7 @@
 // Requirements
 // ------------------------------------------------------------------------------
 
-import runAll from '#lib'
+import runAll from '#bin/common/run-all.js'
 import parseCLIArgs from '#bin/common/parse-cli-args.js'
 
 // ------------------------------------------------------------------------------
