@@ -68,7 +68,7 @@ Run npm-scripts.
     Use `node --run` instead of the package manager to execute scripts.
     This does not run pre/post lifecycle hooks or populate npm-specific environment variables; existing environment variables are inherited.
     Default is `false`, unless `"npm-run-all2": { "nodeRun": true }` is set in `package.json`.
-    Passing `false` does not override an enabled package setting.
+    An explicit `true` or `false` overrides the package setting; omitting this option uses the package setting.
     The package setting is read only when `options.taskList` is omitted or `null`.
   - **options.packageConfig** `object|null` --
     The map-like object to overwrite package configs.

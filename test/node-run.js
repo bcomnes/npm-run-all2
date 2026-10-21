@@ -10,6 +10,7 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync, writeFileSync } from 'node:fs'
 import nodeApi from '#lib'
 import { delay, result, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
@@ -22,6 +23,61 @@ describe('[node-run]', () => {
   after(() => process.chdir('..'))
 
   beforeEach(() => delay(1000).then(removeResult))
+
+  describe('package nodeRun defaults and explicit overrides', () => {
+    const task = 'test-task:node-run-lifecycle'
+
+    /**
+     * @param {boolean | undefined} nodeRun - Package setting.
+     * @param {() => Promise<void>} callback - Assertions to run with the setting.
+     */
+    async function withPackageNodeRun (nodeRun, callback) {
+      const original = readFileSync('package.json')
+      const pkg = JSON.parse(original.toString('utf8'))
+      pkg['npm-run-all2'] = { ...pkg['npm-run-all2'], nodeRun }
+      try {
+        writeFileSync('package.json', JSON.stringify(pkg, null, 2))
+        await callback()
+      } finally {
+        writeFileSync('package.json', original)
+      }
+    }
+
+    for (const packageNodeRun of [undefined, false, true]) {
+      for (const nodeRun of [undefined, false, true]) {
+        test(`Node API: package=${packageNodeRun}, option=${nodeRun}`, async () => {
+          await withPackageNodeRun(packageNodeRun, async () => {
+            const options = nodeRun === undefined ? {} : { nodeRun }
+            const results = await nodeApi(task, options)
+            assert.ok(results != null)
+            assert.strictEqual(results[0]?.code, 0)
+            const effectiveNodeRun = nodeRun ?? packageNodeRun ?? false
+            assert.strictEqual(result(), effectiveNodeRun ? 'main' : 'premainpost')
+          })
+        })
+      }
+    }
+
+    for (const { name, run } of [
+      { name: 'npm-run-all', run: runAll },
+      { name: 'run-p', run: runPar },
+      { name: 'run-s', run: runSeq },
+    ]) {
+      test(`${name} inherits package nodeRun=true without a flag`, async () => {
+        await withPackageNodeRun(true, async () => {
+          await run([task])
+          assert.strictEqual(result(), 'main')
+        })
+      })
+
+      test(`${name} --node-run overrides package nodeRun=false`, async () => {
+        await withPackageNodeRun(false, async () => {
+          await run(['--node-run', task])
+          assert.strictEqual(result(), 'main')
+        })
+      })
+    }
+  })
 
   describe('should run tasks sequentially with --node-run:', () => {
     test('Node API', async () => {
