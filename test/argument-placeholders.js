@@ -175,6 +175,86 @@ describe('[argument-placeholders]', () => {
     })
   })
 
+  describe("'{%}' should skip every command when there are no arguments:", () => {
+    test('Node API', async () => {
+      const tasks = await nodeApi(['test-task:dump {%}', 'test-task:dump {%}'])
+      strictEqual(tasks, null)
+      strictEqual(result(), null)
+    })
+
+    test('npm-run-all command', async () => {
+      await runAll(['test-task:dump {%}', 'test-task:dump {%}', '--'])
+      strictEqual(result(), null)
+    })
+
+    test('run-s command', async () => {
+      await runSeq(['test-task:dump {%}', 'test-task:dump {%}', '--'])
+      strictEqual(result(), null)
+    })
+
+    test('run-p command', async () => {
+      await runPar(['test-task:dump {%}', 'test-task:dump {%}', '--'])
+      strictEqual(result(), null)
+    })
+
+    test('repeated Node API calls', async () => {
+      strictEqual(await nodeApi('test-task:dump {%}'), null)
+      strictEqual(await nodeApi('test-task:dump {%}'), null)
+      strictEqual(result(), null)
+    })
+
+    test('Node API call followed by a positional placeholder', async () => {
+      await nodeApi('test-task:dump {%}')
+      await nodeApi('test-task:dump {1}', { arguments: ['1st'] })
+      strictEqual(result(), '["1st"]')
+    })
+
+    test('Node API call followed by arguments to unfold', async () => {
+      await nodeApi('test-task:dump {%}')
+      await nodeApi('test-task:dump {%}', { arguments: ['1st', '2nd'] })
+      strictEqual(result(), '["1st"]["2nd"]')
+    })
+
+    test('Node API call followed by mixed placeholders', async () => {
+      await nodeApi('test-task:dump {%}')
+      await nodeApi('test-task:dump {%} {1}', { arguments: ['1st', '2nd'] })
+      strictEqual(result(), '["1st","1st"]["2nd","1st"]')
+    })
+  })
+
+  describe('Placeholder scanning should handle malformed and nested input:', () => {
+    for (const [name, suffix] of [
+      ['repeated unpack prefixes', '{{%|'.repeat(25000)],
+      ['unterminated numeric placeholder', '{1' + '00'.repeat(50000)],
+      ['unterminated unpack placeholder', '{{%' + '00'.repeat(50000)],
+    ]) {
+      test(name, async () => {
+        const tasks = await nodeApi(`missing:* {@} ${suffix}`, { taskList: [] })
+        assert.deepEqual(tasks, [])
+        strictEqual(result(), null)
+      })
+    }
+
+    test('opening braces in default values', async () => {
+      await nodeApi('test-task:dump {1:-a{b} {2:=c{d} {2}')
+      strictEqual(result(), '["a{b","c{d","c{d"]')
+    })
+
+    test('valid placeholders after unmatched opening braces', async () => {
+      await nodeApi('test-task:dump {{1} {{%}', { arguments: ['value'] })
+      strictEqual(result(), '["{value","{value"]')
+    })
+
+    test('multiple unpack placeholders in one command', async () => {
+      await nodeApi('test-task:dump {%} {%}', { arguments: ['1st', '2nd'] })
+      strictEqual(result(), '["1st","1st"]["2nd","2nd"]')
+    })
+
+    test('invalid unpack options remain rejected', async () => {
+      await assert.rejects(nodeApi('test-task:dump {%:-foo}', { arguments: ['value'] }), /Invalid Placeholder/)
+    })
+  })
+
   describe("Every '{1}', '{2}', '{@}' and '{*}' should be replaced by the arguments preceded by '--':", () => {
     test('Node API', async () => {
       await nodeApi('test-task:dump {1} {2} {3} {@} {*}', { arguments: ['1st', '2nd'] })
