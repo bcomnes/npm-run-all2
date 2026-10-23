@@ -36,7 +36,7 @@ Options:
                                will exit with non-zero code if one or more tasks
                                threw error(s).
     --max-parallel <number>  - Set the maximum number of parallelism. Default is
-                               unlimited.
+                               RUN_P_MAX_PARALLEL, or unlimited if unset.
     --npm-path <string>  - - - Set the path to npm. Default is the value of
                                environment variable npm_execpath.
                                If the variable is not defined, then it's "npm."
