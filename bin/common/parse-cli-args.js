@@ -298,5 +298,15 @@ function parseCLIArgsCore (set, args) {
  * @returns {ArgumentSet} The parsed CLI arguments.
  */
 export default function parseCLIArgs (args, initialValues, options) {
-  return parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
+  const set = parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
+  const envMaxParallel = process.env['RUN_P_MAX_PARALLEL']
+
+  if (set.parallel && set.maxParallel === 0 && envMaxParallel) {
+    set.maxParallel = parseInt(envMaxParallel, 10)
+    if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
+      throw new Error(`Invalid Environment Variable: RUN_P_MAX_PARALLEL ${envMaxParallel}`)
+    }
+  }
+
+  return set
 }
