@@ -13,7 +13,7 @@ import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import BufferStream from './lib/buffer-stream.cjs'
 import { result, removeResult } from './lib/util.cjs'
-import spawn from 'cross-spawn'
+import spawn from 'tiny-cross-spawn'
 
 // ------------------------------------------------------------------------------
 // Helpers
