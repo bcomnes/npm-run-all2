@@ -29,7 +29,7 @@ Options:
                                will exit with non-zero code if one or more tasks
                                threw error(s).
     --max-parallel <number>  - Set the maximum number of parallelism. Default is
-                               unlimited.
+                               RUN_P_MAX_PARALLEL, or unlimited if unset.
     --npm-path <string>  - - - Set the path to npm. Default is the value of
                                environment variable npm_execpath.
                                If the variable is not defined, then it's "npm."
@@ -61,6 +61,17 @@ Examples:
     $ run-p --print-label "build:** -- --watch"
     $ run-p -l "build:** -- --watch"
     $ run-p start-server start-browser start-electron
+```
+
+### Default parallelism
+
+Set the `RUN_P_MAX_PARALLEL` environment variable to a positive number to limit parallel tasks without changing every command in a project.
+Nested `run-p` and `npm-run-all --parallel` commands inherit this default.
+An explicit `--max-parallel` option takes precedence, and sequential commands ignore the variable.
+An unset or empty variable leaves parallelism unlimited; invalid values produce an error when the default is used.
+
+```sh
+RUN_P_MAX_PARALLEL=2 run-p build:*
 ```
 
 ### npm-scripts
