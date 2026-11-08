@@ -103,6 +103,29 @@ describe('[fail] it should fail', () => {
     test('run-p command', async () => await shouldFail(runPar(['test-task:error'])))
   })
 
+  describe('if tasks could not be spawned with --continue-on-error:', () => {
+    const npmPath = '/nonexistent/npm'
+
+    /**
+     * Checks that the given promise rejects with the spawn error.
+     * @param {Promise<unknown>} p - A promise to check.
+     * @returns {Promise<void>} A promise which is checked.
+     */
+    async function shouldFailToSpawn (p) {
+      await assert.rejects(p, { code: 'ENOENT' })
+    }
+
+    test('Node API (sequential)', async () => await shouldFailToSpawn(
+      nodeApi(['test-task:append a', 'test-task:append b'], { continueOnError: true, npmPath })
+    ))
+    test('Node API (parallel)', async () => await shouldFailToSpawn(
+      nodeApi(['test-task:append a', 'test-task:append b'], { parallel: true, continueOnError: true, npmPath })
+    ))
+    test('npm-run-all command', async () => await shouldFail(runAll(['-c', '--npm-path', npmPath, 'test-task:append a'])))
+    test('run-s command', async () => await shouldFail(runSeq(['-c', '--npm-path', npmPath, 'test-task:append a', 'test-task:append b'])))
+    test('run-p command', async () => await shouldFail(runPar(['-c', '--npm-path', npmPath, 'test-task:append a', 'test-task:append b'])))
+  })
+
   describe('if tasks exited via a signal:', () => {
     test('Node API', async () => await shouldFail(nodeApi('test-task:abort')))
     test('npm-run-all command', async () => await shouldFail(runAll(['test-task:abort'])))
