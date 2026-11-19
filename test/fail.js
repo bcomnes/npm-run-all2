@@ -14,6 +14,7 @@
 import { test, describe, before, after, beforeEach, afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import nodeApi from '#lib'
+import BufferStream from './lib/buffer-stream.cjs'
 import { delay, removeResult, runAll, runPar, runSeq } from './lib/util.cjs'
 
 // ------------------------------------------------------------------------------
@@ -105,25 +106,34 @@ describe('[fail] it should fail', () => {
 
   describe('if tasks could not be spawned with --continue-on-error:', () => {
     const npmPath = '/nonexistent/npm'
+    const tasks = ['test-task:append a', 'test-task:append b']
 
-    /**
-     * Checks that the given promise rejects with the spawn error.
-     * @param {Promise<unknown>} p - A promise to check.
-     * @returns {Promise<void>} A promise which is checked.
-     */
-    async function shouldFailToSpawn (p) {
-      await assert.rejects(p, { code: 'ENOENT' })
-    }
+    test('Node API (sequential)', async () => {
+      const stdout = new BufferStream()
+      await assert.rejects(nodeApi(tasks, { continueOnError: true, npmPath, printName: true, stdout }), { code: 'ENOENT' })
+      assert.match(stdout.value, /node tasks\/append2\.cjs a/)
+      assert.match(stdout.value, /node tasks\/append2\.cjs b/)
+    })
 
-    test('Node API (sequential)', async () => await shouldFailToSpawn(
-      nodeApi(['test-task:append a', 'test-task:append b'], { continueOnError: true, npmPath })
-    ))
-    test('Node API (parallel)', async () => await shouldFailToSpawn(
-      nodeApi(['test-task:append a', 'test-task:append b'], { parallel: true, continueOnError: true, npmPath })
-    ))
-    test('npm-run-all command', async () => await shouldFail(runAll(['-c', '--npm-path', npmPath, 'test-task:append a'])))
-    test('run-s command', async () => await shouldFail(runSeq(['-c', '--npm-path', npmPath, 'test-task:append a', 'test-task:append b'])))
-    test('run-p command', async () => await shouldFail(runPar(['-c', '--npm-path', npmPath, 'test-task:append a', 'test-task:append b'])))
+    test('Node API (parallel)', async () => {
+      await assert.rejects(nodeApi(tasks, { parallel: true, continueOnError: true, npmPath }), { code: 'ENOENT' })
+    })
+
+    test('Node API (bounded parallel)', async () => {
+      await assert.rejects(nodeApi(tasks, { parallel: true, maxParallel: 1, continueOnError: true, npmPath }), { code: 'ENOENT' })
+    })
+
+    test('npm-run-all command', async () => {
+      await assert.rejects(runAll(['-cp', '--npm-path', npmPath, ...tasks]), /ENOENT/)
+    })
+
+    test('run-s command', async () => {
+      await assert.rejects(runSeq(['-c', '--npm-path', npmPath, ...tasks]), /ENOENT/)
+    })
+
+    test('run-p command', async () => {
+      await assert.rejects(runPar(['-c', '--npm-path', npmPath, ...tasks]), /ENOENT/)
+    })
   })
 
   describe('if tasks exited via a signal:', () => {
