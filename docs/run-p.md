@@ -20,10 +20,15 @@ Options:
                                each command's output until it has finished.
     --color-mode <mode>  - - - Override the color palette used for task labels
                                when --print-label is active.
-                               auto (default): detect from terminal capabilities.
+                               auto (default): extended hex colors only with
+                               runtime hex styleText support and terminal color
+                               depth >=24 bits; otherwise named colors.
                                none: disable label colors.
                                16: force 16-color named palette.
-                               256: force 256-color palette.
+                               256: extended colors (named fallback).
+                               Legacy name: requests hex colors when supported
+                               by runtime styleText, not indexed ANSI colors.
+                               Label colors still require a TTY.
     -c, --continue-on-error  - Set the flag to continue executing other tasks
                                even if a task threw an error. 'run-p' itself
                                will exit with non-zero code if one or more tasks

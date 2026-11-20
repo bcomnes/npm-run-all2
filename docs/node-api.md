@@ -41,7 +41,11 @@ Run npm-scripts.
     Default is `false`.
   - **options.colorMode** `"auto"|"none"|"16"|"256"` --
     Override the color palette used for task labels when `options.printLabel` is `true`.
-    `"auto"` detects the palette from the stream's color depth; `"none"` disables colors; `"16"` forces the named 16-color palette; `"256"` forces the ANSI 256-color palette.
+    Label colors use Node.js `util.styleText` instead of `ansi-styles`; the modes remain `"auto"`, `"none"`, `"16"`, and `"256"`.
+    `"auto"` uses the extended hex palette only when the runtime supports hex colors in `util.styleText` and the stream's color depth is at least 24 bits; otherwise, it uses named colors.
+    `"none"` disables colors, and `"16"` selects the named 16-color palette.
+    `"256"` is a legacy name requesting extended colors when the runtime supports hex colors in `util.styleText`, with a named-color fallback.
+    It does not promise indexed ANSI 256-color output or bypass the existing TTY requirement for label colors.
     Default is `"auto"`.
   - **options.config** `object|null` --
     The map-like object of npm config values passed to the package manager as `--key=value`.

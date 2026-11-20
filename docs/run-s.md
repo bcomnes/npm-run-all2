@@ -22,10 +22,15 @@ Options:
                                more tasks threw error(s).
     --color-mode <mode>  - - - Override the color palette used for task labels
                                when --print-label is active.
-                               auto (default): detect from terminal capabilities.
+                               auto (default): extended hex colors only with
+                               runtime hex styleText support and terminal color
+                               depth >=24 bits; otherwise named colors.
                                none: disable label colors.
                                16: force 16-color named palette.
-                               256: force 256-color palette.
+                               256: extended colors (named fallback).
+                               Legacy name: requests hex colors when supported
+                               by runtime styleText, not indexed ANSI colors.
+                               Label colors still require a TTY.
     --npm-path <string>  - - - Set the path to npm. Default is the value of
                                environment variable npm_execpath.
                                If the variable is not defined, then it's "npm."
