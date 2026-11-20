@@ -53,12 +53,11 @@ describe('[cli-help] stream output', () => {
         assert.ok(options.includes(flag), `${command} should document ${flag}`)
       }
       assert.match(options, /--color-mode <mode>/)
-      assert.match(options, /auto \(default, extended hex colors only with runtime hex styleText support and terminal color depth >=24 bits; otherwise named colors\)/)
+      assert.match(options, /auto \(default, based on what your terminal supports\)/)
       assert.match(options, /none \(disable colors\)/)
-      assert.match(options, /16 \(named colors\)/)
-      assert.match(options, /256 \(extended colors, named fallback\)/)
-      assert.match(options, /256 is a legacy name requesting hex colors when runtime styleText supports them, not indexed ANSI colors\./)
-      assert.match(options, /Label colors still require a TTY\./)
+      assert.match(options, /16 \(basic colors\)/)
+      assert.match(options, /256 \(more colors, if your Node\.js version supports them\)/)
+      assert.match(options, /Labels are only colored when output goes to a terminal\./)
       if (command === 'npm-run-all') {
         assert.match(options, /-p, --parallel <tasks>/)
         assert.match(options, /-s, --sequential <tasks>/)

@@ -25,7 +25,7 @@ export function getHelpOptions (singleMode = false) {
     'color-mode': {
       type: 'string',
       helpLabel: '--color-mode <mode>',
-      help: 'Override the color palette for task labels with --print-label: auto (default, extended hex colors only with runtime hex styleText support and terminal color depth >=24 bits; otherwise named colors), none (disable colors), 16 (named colors), or 256 (extended colors, named fallback). 256 is a legacy name requesting hex colors when runtime styleText supports them, not indexed ANSI colors. Label colors still require a TTY.'
+      help: 'Override the color palette for task labels with --print-label: auto (default, based on what your terminal supports), none (disable colors), 16 (basic colors), or 256 (more colors, if your Node.js version supports them). Labels are only colored when output goes to a terminal.'
     },
     'max-parallel': {
       type: 'string',

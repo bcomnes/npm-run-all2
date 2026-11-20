@@ -17,15 +17,14 @@ Options:
                                each command's output until it has finished.
     --color-mode <mode>  - - - Override the color palette used for task labels
                                when --print-label is active.
-                               auto (default): extended hex colors only with
-                               runtime hex styleText support and terminal color
-                               depth >=24 bits; otherwise named colors.
+                               auto (default): based on what your terminal
+                               supports.
                                none: disable label colors.
-                               16: force 16-color named palette.
-                               256: extended colors (named fallback).
-                               Legacy name: requests hex colors when supported
-                               by runtime styleText, not indexed ANSI colors.
-                               Label colors still require a TTY.
+                               16: basic colors.
+                               256: more colors, if your Node.js version
+                               supports them.
+                               Labels are only colored when output goes to a
+                               terminal.
     -c, --continue-on-error  - Set the flag to continue executing
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with
