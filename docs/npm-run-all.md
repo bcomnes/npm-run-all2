@@ -17,10 +17,14 @@ Options:
                                each command's output until it has finished.
     --color-mode <mode>  - - - Override the color palette used for task labels
                                when --print-label is active.
-                               auto (default): detect from terminal capabilities.
+                               auto (default): based on what your terminal
+                               supports.
                                none: disable label colors.
-                               16: force 16-color named palette.
-                               256: force 256-color palette.
+                               16: basic colors.
+                               256: more colors, if your Node.js version
+                               supports them.
+                               Labels are only colored when output goes to a
+                               terminal.
     -c, --continue-on-error  - Set the flag to continue executing
                                other/subsequent tasks even if a task threw an
                                error. 'npm-run-all' itself will exit with
@@ -212,11 +216,9 @@ Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/
 
 ### Known Limitations
 
-- If `--print-label` option is given, some tools in scripts might stop coloring their output.
-  Because some coloring library (e.g. [chalk]) will stop coloring if `process.stdout` is not a TTY.
-  `npm-run-all` changes the `process.stdout` of child processes to a pipe in order to add labels to the head of each line if `--print-label` option is given.<br>
-  For example, [eslint] stops coloring under `npm-run-all --print-label`. But [eslint] has `--color` option to force coloring, we can use it. For anything [chalk] based you can set the environment variable `FORCE_COLOR=1` to produce colored output anyway.
+- With `--print-label` or `--aggregate-output`, some child tools stop generating colors because their output is connected to a pipe rather than a terminal.
+  `npm-run-all` preserves emitted ANSI colors but does not force child tools to generate them.
+  Set `FORCE_COLOR=1` for tools that support it, or use a tool-specific override such as `tsc --pretty true` or `eslint --color`.
+  See [Preserving colors in child tools](colors.md) for shell examples, environment-variable conflicts, and tool-specific quirks and limitations.
 
 [glob]: https://www.npmjs.com/package/glob#glob-primer
-[chalk]: https://www.npmjs.com/package/chalk
-[eslint]: https://www.npmjs.com/package/eslint
