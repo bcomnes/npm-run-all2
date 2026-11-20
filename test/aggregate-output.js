@@ -11,6 +11,7 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
+import { Writable } from 'node:stream'
 import nodeApi from '#lib'
 import BufferStream from './lib/buffer-stream.cjs'
 import { runAll, runPar, runSeq } from './lib/util.cjs'
@@ -111,5 +112,20 @@ describe('[aggregated-output] npm-run-all', () => {
       )
       assert.strictEqual(stdout.value, EXPECTED_PARALLELIZED_TEXT)
     })
+  })
+
+  test('should preserve multi-byte characters split across output chunks', async () => {
+    /** @type {Buffer[]} */
+    const chunks = []
+    const stdout = new Writable({
+      write (chunk, _encoding, callback) {
+        chunks.push(chunk)
+        callback()
+      },
+    })
+
+    await nodeApi(['test-task:split-utf8'], { stdout, parallel: true, silent: true, aggregateOutput: true })
+
+    assert.deepStrictEqual(Buffer.concat(chunks), Buffer.from('€\n'))
   })
 })
