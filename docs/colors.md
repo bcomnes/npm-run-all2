@@ -41,36 +41,16 @@ Add tool-specific flags to the script that runs the tool, not to `npm-run-all` i
 The following notes are based on upstream documentation and source code, not runtime tests.
 Behavior can differ between versions and with custom formatters, reporters, or plugins.
 
-- **[TypeScript `tsc`][typescript-pretty]**: Use `tsc --pretty true`, or set `"pretty": true` in `compilerOptions`.
-  In [TypeScript 5.9.3][typescript-source], automatic pretty diagnostics require stdout to be a TTY and `NO_COLOR` not to be set.
-  An explicit `pretty` setting overrides that default.
-  `FORCE_COLOR` does not control diagnostic colors.
-  Pretty output also adds source context, and compiler help uses separate color detection.
-- **[Vitest][vitest-source]**: Use `FORCE_COLOR=1 vitest run` or `vitest run --color`.
-  Vitest 4.0.0's normal reporters use [tinyrainbow 3.0.3][tinyrainbow-source], which supports both options.
-  `NO_COLOR` or `--no-color` disables its colors even when colors are forced.
-  Live summaries and keyboard interaction have separate TTY checks.
-  Use `--reporter=verbose` if you need more test detail without an interactive display.
-- **[es-check][es-check-source]**: Versions 9.8.1 and 9.9.0 have no working force-color option for ordinary piped stdout in the built-in logger.
-  They reject non-TTY stdout before checking `FORCE_COLOR`, including for messages written to stderr.
-  `--noColor` and `--no-color` can disable colors but cannot force them on.
-  This depends on the version.
-  [Version 7.2.1][es-check-older] used `supports-color`, which supports `FORCE_COLOR=1` through a pipe.
-- **[ESLint][eslint-color]**: Use `eslint --color`, or `FORCE_COLOR=1` with the default formatter.
-  `--color` overrides terminal detection.
-  Custom formatters may handle colors differently.
-- **[Stylelint][stylelint-color]**: Use `stylelint --color`, or `FORCE_COLOR=1`.
-  Color flags control formatted results.
-  Custom formatters may behave differently.
-- **[Vite][vite-source]**: Use `FORCE_COLOR=1`.
-  Its built-in logger uses [picocolors][picocolors-source], where a nonempty `NO_COLOR` takes priority over `FORCE_COLOR`.
-  Do not assume Vite accepts `--color` just because its color library recognizes the flag.
-- **[Rollup][rollup-source]**: The linked color helper enables colors unless `FORCE_COLOR=0` or a nonempty `NO_COLOR` disables them.
-  It does not require a TTY, so piped output may already have colors.
-  CLI diagnostics use stderr rather than the bundle output on stdout.
-- **[Prettier][prettier-source]**: Use `prettier --color`, or `FORCE_COLOR=1`, for diagnostic messages.
-  In the linked logger, a nonempty `NO_COLOR` or `--no-color` takes priority.
-  These options do not syntax-highlight formatted source written to stdout or files.
+| Tool | How to force colors | Notes |
+| --- | --- | --- |
+| [TypeScript `tsc`][typescript-pretty] | `tsc --pretty true`, or `"pretty": true` in `compilerOptions` | In [TypeScript 5.9.3][typescript-source], pretty diagnostics are only automatic when stdout is a TTY and `NO_COLOR` is not set. `FORCE_COLOR` does not control diagnostic colors. Pretty output also adds source context. |
+| [Vitest][vitest-source] | `FORCE_COLOR=1 vitest run` or `vitest run --color` | Vitest 4.0.0 reporters use [tinyrainbow 3.0.3][tinyrainbow-source]. `NO_COLOR` or `--no-color` still wins. Live summaries and keyboard shortcuts need a real terminal. Use `--reporter=verbose` for more detail. |
+| [es-check][es-check-source] | None for piped stdout in 9.8.1 and 9.9.0 | These versions check for a TTY before `FORCE_COLOR`. `--noColor` and `--no-color` can only disable colors. [Version 7.2.1][es-check-older] supports `FORCE_COLOR=1`. |
+| [ESLint][eslint-color] | `eslint --color`, or `FORCE_COLOR=1` with the default formatter | Custom formatters may handle colors differently. |
+| [Stylelint][stylelint-color] | `stylelint --color`, or `FORCE_COLOR=1` | Custom formatters may handle colors differently. |
+| [Vite][vite-source] | `FORCE_COLOR=1` | Uses [picocolors][picocolors-source], where a nonempty `NO_COLOR` wins. Vite does not document a `--color` flag. |
+| [Rollup][rollup-source] | Colors are on by default | Does not require a TTY, so piped output may already have colors. `FORCE_COLOR=0` or a nonempty `NO_COLOR` disables them. Diagnostics go to stderr. |
+| [Prettier][prettier-source] | `prettier --color`, or `FORCE_COLOR=1` | Only affects diagnostic messages, not formatted source. A nonempty `NO_COLOR` or `--no-color` wins. |
 
 For tools without a working override, report the color-detection limitation upstream.
 Forcing colors does not restore interactive features or progress displays.
