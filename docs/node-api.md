@@ -38,12 +38,14 @@ Run npm-scripts.
   - **options.aggregateOutput** `boolean` --
     The flag to avoid interleaving output by delaying printing of each command's output until it has finished.
     This option is valid only with `options.parallel` option.
-    Child tools may disable colors when stdout is piped; see [Preserving colors in child tools](colors.md) for overrides and tool-specific quirks.
+    Child tools may disable colors when stdout is piped.
+    See [Preserving colors in child tools](colors.md) for overrides and tool-specific quirks.
     Default is `false`.
   - **options.colorMode** `"auto"|"none"|"16"|"256"` --
     Override the color palette used for task labels when `options.printLabel` is `true`.
-    Label colors use Node.js `util.styleText` instead of `ansi-styles`; the modes remain `"auto"`, `"none"`, `"16"`, and `"256"`.
-    `"auto"` uses the extended hex palette only when the runtime supports hex colors in `util.styleText` and the stream's color depth is at least 24 bits; otherwise, it uses named colors.
+    Label colors use Node.js `util.styleText`.
+    `"auto"` uses the extended hex palette when the runtime supports hex colors and the stream's color depth is at least 24 bits.
+    Otherwise, it uses named colors.
     `"none"` disables colors, and `"16"` selects the named 16-color palette.
     `"256"` is a legacy name requesting extended colors when the runtime supports hex colors in `util.styleText`, with a named-color fallback.
     It does not promise indexed ANSI 256-color output or bypass the existing TTY requirement for label colors.
