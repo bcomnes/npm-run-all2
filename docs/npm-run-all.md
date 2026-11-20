@@ -217,11 +217,9 @@ Those are similar to [Shell Parameters](http://www.gnu.org/software/bash/manual/
 
 ### Known Limitations
 
-- If `--print-label` option is given, some tools in scripts might stop coloring their output.
-  Because some coloring library (e.g. [chalk]) will stop coloring if `process.stdout` is not a TTY.
-  `npm-run-all` changes the `process.stdout` of child processes to a pipe in order to add labels to the head of each line if `--print-label` option is given.<br>
-  For example, [eslint] stops coloring under `npm-run-all --print-label`. But [eslint] has `--color` option to force coloring, we can use it. For anything [chalk] based you can set the environment variable `FORCE_COLOR=1` to produce colored output anyway.
+- With `--print-label` or `--aggregate-output`, some child tools stop generating colors because their output is connected to a pipe rather than a terminal.
+  `npm-run-all` preserves emitted ANSI colors but does not force child tools to generate them.
+  Set `FORCE_COLOR=1` for tools that support it, or use a tool-specific override such as `tsc --pretty true` or `eslint --color`.
+  See [Preserving colors in child tools](colors.md) for shell examples, environment-variable conflicts, and tool-specific quirks and limitations.
 
 [glob]: https://www.npmjs.com/package/glob#glob-primer
-[chalk]: https://www.npmjs.com/package/chalk
-[eslint]: https://www.npmjs.com/package/eslint

@@ -38,6 +38,7 @@ Run npm-scripts.
   - **options.aggregateOutput** `boolean` --
     The flag to avoid interleaving output by delaying printing of each command's output until it has finished.
     This option is valid only with `options.parallel` option.
+    Child tools may disable colors when stdout is piped; see [Preserving colors in child tools](colors.md) for overrides and tool-specific quirks.
     Default is `false`.
   - **options.colorMode** `"auto"|"none"|"16"|"256"` --
     Override the color palette used for task labels when `options.printLabel` is `true`.
@@ -83,6 +84,7 @@ Run npm-scripts.
   - **options.printLabel** `boolean` --
     Set the flag to print the task name as a prefix on each line of output.
     Tools in scripts may stop coloring their output if this option is given.
+    See [Preserving colors in child tools](colors.md) for overrides and tool-specific quirks.
     Default is `false`.
   - **options.printName** `boolean` --
     Set the flag to print the task name before running each task.
