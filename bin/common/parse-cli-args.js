@@ -66,6 +66,36 @@ function createPackageConfig () {
 }
 
 /**
+ * Parses a max parallelism value.
+ *
+ * @param {string} value - The raw value.
+ * @param {string} errorPrefix - The error message prefix for an invalid value.
+ * @returns {number} A positive integer.
+ */
+function parseMaxParallel (value, errorPrefix) {
+  const maxParallel = parseInt(value, 10)
+  if (!Number.isFinite(maxParallel) || maxParallel <= 0) {
+    throw new Error(`${errorPrefix} ${value}`)
+  }
+  return maxParallel
+}
+
+/**
+ * Applies the default max parallelism from `process.env.RUN_P_MAX_PARALLEL`.
+ * The default applies only to parallel runs without an explicit `--max-parallel`,
+ * so sequential runs ignore the variable even if it is invalid.
+ *
+ * @param {ArgumentSet} set - The parsed CLI arguments.
+ * @returns {void}
+ */
+function applyMaxParallelDefault (set) {
+  const value = process.env['RUN_P_MAX_PARALLEL']
+  if (value && set.parallel && set.maxParallel === 0) {
+    set.maxParallel = parseMaxParallel(value, 'Invalid Environment Variable: RUN_P_MAX_PARALLEL')
+  }
+}
+
+/**
  * Adds a new group into a given list.
  *
  * @param {CliGroup[]} groups - A group list to add.
@@ -193,13 +223,7 @@ function parseCLIArgsCore (set, args) {
         break
 
       case '--max-parallel':
-        {
-          const rawMaxParallel = args[++i]
-          set.maxParallel = parseInt(rawMaxParallel ?? '', 10)
-          if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
-            throw new Error(`Invalid Option: --max-parallel ${rawMaxParallel ?? ''}`)
-          }
-        }
+        set.maxParallel = parseMaxParallel(args[++i] ?? '', 'Invalid Option: --max-parallel')
         break
 
       case '-s':
@@ -299,14 +323,6 @@ function parseCLIArgsCore (set, args) {
  */
 export default function parseCLIArgs (args, initialValues, options) {
   const set = parseCLIArgsCore(new ArgumentSet(initialValues, options), args)
-  const envMaxParallel = process.env['RUN_P_MAX_PARALLEL']
-
-  if (set.parallel && set.maxParallel === 0 && envMaxParallel) {
-    set.maxParallel = parseInt(envMaxParallel, 10)
-    if (!Number.isFinite(set.maxParallel) || set.maxParallel <= 0) {
-      throw new Error(`Invalid Environment Variable: RUN_P_MAX_PARALLEL ${envMaxParallel}`)
-    }
-  }
-
+  applyMaxParallelDefault(set)
   return set
 }
