@@ -57,6 +57,7 @@ jobs:
       - uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7
         if: ${{ github.event_name == 'pull_request' }}
         with:
+          files: ./lcov.info
           flags: ${{ matrix.os }}-${{ matrix.node }}
 
   automerge:

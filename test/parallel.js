@@ -11,6 +11,9 @@
 
 import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
+import { copyFileSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import nodeApi from '#lib'
 import NpmRunAllError from '#lib/npm-run-all-error.js'
 import spawnWithKill from './lib/spawn-with-kill.cjs'
@@ -283,6 +286,31 @@ describe('[parallel]', () => {
   })
 
   describe('should run tasks in parallel-2 when was given --max-parallel 2 option:', () => {
+    let workspace = ''
+    let previousCwd = ''
+
+    before(() => {
+      previousCwd = process.cwd()
+      workspace = mkdtempSync(join(tmpdir(), 'npm-run-all-max-parallel-'))
+      copyFileSync(new URL('../test-workspace/tasks/max-parallel.cjs', import.meta.url), join(workspace, 'task.cjs'))
+      writeFileSync(join(workspace, 'package.json'), JSON.stringify({
+        private: true,
+        scripts: { 'test-task:append': 'node task.cjs' },
+      }))
+      process.chdir(workspace)
+    })
+
+    after(() => {
+      process.chdir(previousCwd)
+      rmSync(workspace, { recursive: true, force: true, maxRetries: 3 })
+    })
+
+    function assertSchedule () {
+      // Lowercase starts a task; uppercase finishes it.
+      // Require a/b overlap, then refill a's slot with c while b is still running.
+      assert.match(result() ?? '', /^(?:ab|ba)Ac(?:BC|CB)$/)
+    }
+
     test('Node API', async () => {
       const results = await nodeApi(['test-task:append a', 'test-task:append b', 'test-task:append c'], { parallel: true, maxParallel: 2 })
       assert.ok(results != null, 'results should not be null')
@@ -296,35 +324,17 @@ describe('[parallel]', () => {
       assert.ok(results[2] != null, 'results[2] should exist')
       assert.strictEqual(results[2].name, 'test-task:append c')
       assert.strictEqual(results[2].code, 0)
-      assert.ok(
-        result() === 'ababcc' ||
-                result() === 'babacc' ||
-                result() === 'abbacc' ||
-                result() === 'baabcc',
-        `Expected result to match one of the patterns but got: ${result()}`
-      )
+      assertSchedule()
     })
 
     test('npm-run-all command', async () => {
       await runAll(['--parallel', 'test-task:append a', 'test-task:append b', 'test-task:append c', '--max-parallel', '2'])
-      assert.ok(
-        result() === 'ababcc' ||
-                result() === 'babacc' ||
-                result() === 'abbacc' ||
-                result() === 'baabcc',
-        `Expected result to match one of the patterns but got: ${result()}`
-      )
+      assertSchedule()
     })
 
     test('run-p command', async () => {
       await runPar(['test-task:append a', 'test-task:append b', 'test-task:append c', '--max-parallel', '2'])
-      assert.ok(
-        result() === 'ababcc' ||
-                result() === 'babacc' ||
-                result() === 'abbacc' ||
-                result() === 'baabcc',
-        `Expected result to match one of the patterns but got: ${result()}`
-      )
+      assertSchedule()
     })
   })
 })

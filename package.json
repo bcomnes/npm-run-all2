@@ -21,7 +21,7 @@
     "npm": ">= 10"
   },
   "scripts": {
-    "clean": "npm run clean:declarations-lib && rm -rf coverage jsdoc \"test-workspace/{build,test.txt}\"",
+    "clean": "npm run clean:declarations-lib && rm -rf coverage lcov.info jsdoc \"test-workspace/{build,test.txt}\"",
     "docs": "jsdoc -c jsdoc.json",
     "check:installed-check": "installed-check --ignore-dev",
     "check:eslint": "eslint",
@@ -31,7 +31,7 @@
     "check": "node ./bin/run-p/index.js check:*",
     "test": "node ./bin/run-s/index.js test:*",
     "test:check": "npm run check",
-    "test:node-test": "node scripts/make-slink.js && node --test --test-reporter spec --test-concurrency=1 --test-timeout=240000 --experimental-test-coverage",
+    "test:node-test": "node scripts/make-slink.js && node --test --test-reporter spec --test-reporter-destination stdout --test-reporter lcov --test-reporter-destination lcov.info --test-concurrency=1 --test-timeout=240000 --experimental-test-coverage --test-coverage-lines=95 --test-coverage-branches=85 --test-coverage-functions=90",
     "watch": "node --watch --test",
     "version": "releasearoni version",
     "build": "npm run build:declaration",
