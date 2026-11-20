@@ -19,21 +19,7 @@ For example, with existing `lint:*` scripts:
 FORCE_COLOR=1 run-p --aggregate-output 'lint:*'
 ```
 
-```powershell
-# PowerShell (the setting remains in this session until removed)
-$env:FORCE_COLOR = '1'
-run-p --aggregate-output 'lint:*'
-Remove-Item Env:FORCE_COLOR
-```
 
-```bat
-:: Windows cmd.exe (the setting remains in this session until cleared)
-set "FORCE_COLOR=1"
-run-p --aggregate-output "lint:*"
-set "FORCE_COLOR="
-```
-
-These examples assume `FORCE_COLOR` was not already set; restore its previous value instead of clearing it if necessary.
 Check for conflicting settings such as `NO_COLOR`, `NODE_DISABLE_COLORS`, and a tool's `--no-color` option.
 Their precedence varies between tools, so `FORCE_COLOR=1` is not a universal override.
 Likewise, do not rely on `FORCE_COLOR=0` as a universal way to disable colors: some libraries treat any nonempty value, or even the variable's presence, as an enable request.
