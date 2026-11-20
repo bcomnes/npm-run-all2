@@ -104,6 +104,30 @@ describe('[fail] it should fail', () => {
     test('run-p command', async () => await shouldFail(runPar(['test-task:error'])))
   })
 
+  describe('if tasks could not be spawned:', () => {
+    const npmPath = '/nonexistent/npm'
+    const tasks = ['test-task:append a', 'test-task:append b']
+
+    test('Node API (sequential) stops at the first spawn error', async () => {
+      const stdout = new BufferStream()
+      await assert.rejects(nodeApi(tasks, { npmPath, printName: true, stdout }), { code: 'ENOENT' })
+      assert.match(stdout.value, /node tasks\/append2\.cjs a/)
+      assert.doesNotMatch(stdout.value, /node tasks\/append2\.cjs b/)
+    })
+
+    test('Node API (parallel)', async () => {
+      await assert.rejects(nodeApi(tasks, { parallel: true, npmPath }), { code: 'ENOENT' })
+    })
+
+    test('Node API (race) aborts even with --continue-on-error', async () => {
+      await assert.rejects(nodeApi(tasks, { parallel: true, race: true, continueOnError: true, npmPath }), { code: 'ENOENT' })
+    })
+
+    test('run-s command', async () => {
+      await assert.rejects(runSeq(['--npm-path', npmPath, ...tasks]), /ENOENT/)
+    })
+  })
+
   describe('if tasks could not be spawned with --continue-on-error:', () => {
     const npmPath = '/nonexistent/npm'
     const tasks = ['test-task:append a', 'test-task:append b']
