@@ -1,20 +1,11 @@
-import { test, describe, before, after, beforeEach, afterEach } from 'node:test'
+import { test, describe, before, after, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import parseCLIArgs from '#bin/common/parse-cli-args.js'
 import { result, removeResult, runAll, runPar } from './lib/util.cjs'
 
-const originalMaxParallel = process.env['RUN_P_MAX_PARALLEL']
-
+// This file runs in its own test process; reset the variable between tests.
 beforeEach(() => {
   delete process.env['RUN_P_MAX_PARALLEL']
-})
-
-afterEach(() => {
-  if (originalMaxParallel === undefined) {
-    delete process.env['RUN_P_MAX_PARALLEL']
-  } else {
-    process.env['RUN_P_MAX_PARALLEL'] = originalMaxParallel
-  }
 })
 
 describe('[max-parallel environment] CLI argument parsing', () => {
