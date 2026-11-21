@@ -33,6 +33,10 @@ let promise = runAll(patterns, options);
 
 Run npm-scripts.
 
+The [`RUN_P_MAX_PARALLEL`](run-p.md#default-parallelism) environment variable is read only by the CLI.
+When calling `runAll()` directly, set `options.maxParallel` to limit parallelism.
+The API still uses `process.env.npm_execpath` as a fallback for `options.npmPath`, as documented below.
+
 - **patterns** `string|string[]` -- Glob-like patterns for script names.
 - **options** `object`
   - **options.aggregateOutput** `boolean` --
@@ -64,9 +68,9 @@ Run npm-scripts.
     The flag to run scripts in parallel.
     Default is `false`.
   - **options.maxParallel** `number` --
-    The maximum number of parallelism.
-    This option is valid only with `options.parallel` option.
-    Default is `Number.POSITIVE_INFINITY`.
+    The maximum number of tasks running in parallel.
+    This option applies only when `options.parallel` is `true`.
+    The default is unlimited, regardless of `RUN_P_MAX_PARALLEL`.
   - **options.npmPath** `string` --
     The path to npm.
     Default is `process.env.npm_execpath` or `"npm"`.

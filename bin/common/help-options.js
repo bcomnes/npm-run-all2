@@ -30,7 +30,7 @@ export function getHelpOptions (singleMode = false) {
     'max-parallel': {
       type: 'string',
       helpLabel: '--max-parallel <number>',
-      help: 'Set the maximum number of tasks running in parallel. Default is unlimited. Valid only in parallel mode.'
+      help: 'Set the maximum number of tasks running in parallel. Defaults to the RUN_P_MAX_PARALLEL environment variable, or unlimited if unset. Valid only in parallel mode.'
     },
     'npm-path': {
       type: 'string',
